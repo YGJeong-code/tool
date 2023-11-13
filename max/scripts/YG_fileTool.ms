@@ -1,7 +1,7 @@
 /*
 YG_fileTool
 since 2023.11.10
-last updated 2023.11.10
+last updated 2023.11.13
 by YeonGyun,Jeong
 lupinxyz@gmail.com
 */
