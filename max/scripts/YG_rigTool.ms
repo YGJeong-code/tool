@@ -396,6 +396,18 @@ try( destroydialog YG_rigTool ) catch()
 
 rollout YG_rigTool ("YG_rigTool " + myVersion) width:160 height:312
 (
+	GroupBox 'grp1' "Bone" pos:[8,8] width:144 height:120 align:#left
+	spinner 'spn_boneSize' "Bone Size" pos:[16,24] width:67 height:16 range:[1,20,5] type:#integer scale:1 align:#left
+	button 'btn_makeRootBone' "Make Root Bone" pos:[16,48] width:128 height:32 align:#left
+	button 'btn_openBoneTools' "Open Bone Tools" pos:[16,88] width:128 height:32 align:#left
+	
+	GroupBox 'grp2' "Rig" pos:[8,128] width:144 height:88 align:#left
+	edittext 'bip_name' "Biped : " pos:[16,144] width:128 height:24 align:#left
+	button 'btn_boneConnectToBonePT' "Bone Connect To Biped" pos:[16,176] width:128 height:32 align:#left
+	
+	GroupBox 'grp3' "Layer" pos:[8,216] width:144 height:88 align:#left
+	dropDownList 'layer_name' "" pos:[16,232] width:128 height:22 align:#left
+	button 'btn_layerArrange' "Layer Arrange" pos:[16,264] width:128 height:32 align:#left
 --------------------------------------------------------------------------------------------------------
 --function------------------------------------------------------------------------------------------------
 --------------------------------------------------------------------------------------------------------
@@ -795,6 +807,7 @@ rollout YG_rigTool ("YG_rigTool " + myVersion) width:160 height:312
 		return controlsArray
 	)
 	
+	-- twist function
 	function fnCreateChain preFix subFix splineNode ControlsArray nBones widthVar taperVar =
 	(
 		 --some variables
@@ -1209,7 +1222,8 @@ rollout YG_rigTool ("YG_rigTool " + myVersion) width:160 height:312
 		makeTwistBone()
 	)
 
-	fn boneConnectToBip=
+	--bone connect to biped
+	fn boneConnectToBiped=
 	(
 		for i in 1 to myBoneStruct.myAllList.count do
 		(
@@ -1404,169 +1418,161 @@ rollout YG_rigTool ("YG_rigTool " + myVersion) width:160 height:312
 --------------------------------------------------------------------------------------------------------
 --layer-------------------------------------------------------------------------------------------------
 --------------------------------------------------------------------------------------------------------
-fn getAllChildren obj &arr:#() =
-(
-	for c in obj.children do
+	-- function
+	fn getAllChildren obj &arr:#() =
 	(
-		append arr c
-		getAllChildren c arr:arr
-	)
-	arr
-)
-
-fn layerArrange =
-(
-	myTopLayer = LayerManager.getLayerFromName layer_name.selected
-	if myTopLayer == undefined then
-	(
-		myLayer = LayerManager.newLayer()
-		myLayer.setName layer_name.selected
+		for c in obj.children do
+		(
+			append arr c
+			getAllChildren c arr:arr
+		)
+		arr
 	)
 
-	--
-	myLayerList = #("bip","bip+","bone","bone+","con","geo")
-
-	for i in myLayerList do
+	-- layer arrange
+	fn layerArrange =
 	(
-		myLayer = LayerManager.getLayerFromName i
-		if myLayer == undefined then
+		myTopLayer = LayerManager.getLayerFromName layer_name.selected
+		if myTopLayer == undefined then
 		(
 			myLayer = LayerManager.newLayer()
-			myLayer.setName i
+			myLayer.setName layer_name.selected
 		)
 
-		if i == "bip" then
+		--
+		myLayerList = #("bip","bip+","bone","bone+","con","geo")
+
+		for i in myLayerList do
 		(
-			myList = myBipStruct.myAllList
-			for j in myList do myLayer.addnode j
-		)
-
-		if i == "bip+" then
-		(
-			myFootsteps = execute("$"+bip_name.text+"Footsteps")
-			myHeadNub = execute("$"+bip_name.text+"HeadNub")
-			myLFinger0Nub = execute("$"+bip_name.text+"LFinger0Nub")
-			myLFinger1Nub = execute("$"+bip_name.text+"LFinger1Nub")
-			myLFinger2Nub = execute("$"+bip_name.text+"LFinger2Nub")
-			myLFinger3Nub = execute("$"+bip_name.text+"LFinger3Nub")
-			myLFinger4Nub = execute("$"+bip_name.text+"LFinger4Nub")
-			myLToe0Nub = execute("$"+bip_name.text+"LToe0Nub")
-			myRFinger0Nub = execute("$"+bip_name.text+"RFinger0Nub")
-			myRFinger1Nub = execute("$"+bip_name.text+"RFinger1Nub")
-			myRFinger2Nub = execute("$"+bip_name.text+"RFinger2Nub")
-			myRFinger3Nub = execute("$"+bip_name.text+"RFinger3Nub")
-			myRFinger4Nub = execute("$"+bip_name.text+"RFinger4Nub")
-			myRToe0Nub = execute("$"+bip_name.text+"RToe0Nub")
-
-			myList = #(myFootsteps,myHeadNub,
-				myLFinger0Nub,myLFinger1Nub,myLFinger2Nub,myLFinger3Nub,myLFinger4Nub,myLToe0Nub,
-				myRFinger0Nub,myRFinger1Nub,myRFinger2Nub,myRFinger3Nub,myRFinger4Nub,myRToe0Nub)
-			try(for j in myList do myLayer.addnode j)catch()
-		)
-
-		if i == "bone" then
-		(
-			myLayer.addnode $root
-
-			select (getAllChildren $root arr:(selection as array))
-			for i in selection do
+			myLayer = LayerManager.getLayerFromName i
+			if myLayer == undefined then
 			(
-				myLayer.addnode i
+				myLayer = LayerManager.newLayer()
+				myLayer.setName i
 			)
-			clearSelection()
+
+			if i == "bip" then
+			(
+				myList = myBipStruct.myAllList
+				for j in myList do myLayer.addnode j
+			)
+
+			if i == "bip+" then
+			(
+				myFootsteps = execute("$"+bip_name.text+"Footsteps")
+				myHeadNub = execute("$"+bip_name.text+"HeadNub")
+				myLFinger0Nub = execute("$"+bip_name.text+"LFinger0Nub")
+				myLFinger1Nub = execute("$"+bip_name.text+"LFinger1Nub")
+				myLFinger2Nub = execute("$"+bip_name.text+"LFinger2Nub")
+				myLFinger3Nub = execute("$"+bip_name.text+"LFinger3Nub")
+				myLFinger4Nub = execute("$"+bip_name.text+"LFinger4Nub")
+				myLToe0Nub = execute("$"+bip_name.text+"LToe0Nub")
+				myRFinger0Nub = execute("$"+bip_name.text+"RFinger0Nub")
+				myRFinger1Nub = execute("$"+bip_name.text+"RFinger1Nub")
+				myRFinger2Nub = execute("$"+bip_name.text+"RFinger2Nub")
+				myRFinger3Nub = execute("$"+bip_name.text+"RFinger3Nub")
+				myRFinger4Nub = execute("$"+bip_name.text+"RFinger4Nub")
+				myRToe0Nub = execute("$"+bip_name.text+"RToe0Nub")
+
+				myList = #(myFootsteps,myHeadNub,
+					myLFinger0Nub,myLFinger1Nub,myLFinger2Nub,myLFinger3Nub,myLFinger4Nub,myLToe0Nub,
+					myRFinger0Nub,myRFinger1Nub,myRFinger2Nub,myRFinger3Nub,myRFinger4Nub,myRToe0Nub)
+				try(for j in myList do myLayer.addnode j)catch()
+			)
+
+			if i == "bone" then
+			(
+				myLayer.addnode $root
+
+				select (getAllChildren $root arr:(selection as array))
+				for i in selection do
+				(
+					myLayer.addnode i
+				)
+				clearSelection()
+			)
+
+			if i == "bone+" then
+			(
+				-- myList = myRigStruct.myRigList
+				-- try(for j in myList do myLayer.addnode j)catch()
+				
+				-- myList = myBonePTStruct.myAllList
+				-- try(for j in myList do myLayer.addnode j)catch()
+
+				select $pt_*
+				for i in selection do
+				(
+					myLayer.addnode i
+				)
+				clearSelection()
+
+				select $line_*
+				for i in selection do
+				(
+					myLayer.addnode i
+				)
+				clearSelection()
+			)
+
+			if i == "con" then
+			(
+				-- myList = myRigStruct.myConList
+				-- try(for j in myList do myLayer.addnode j)catch()
+
+				select $con_*
+				for i in selection do
+				(
+					myLayer.addnode i
+				)
+				clearSelection()
+			)
+
+			if i == "geo" then
+			(
+				select geometry
+				select (for i in selection where classOf i == PolyMeshObject collect i)
+				
+				for i in selection do
+				(
+					myLayer.addnode i
+				)
+				clearSelection()
+			)
 		)
 
-		if i == "bone+" then
-		(
-			-- myList = myRigStruct.myRigList
-			-- try(for j in myList do myLayer.addnode j)catch()
-			
-			-- myList = myBonePTStruct.myAllList
-			-- try(for j in myList do myLayer.addnode j)catch()
+		myTopLayer = LayerManager.getLayerFromName layer_name.selected
+		myBipLayer = LayerManager.getLayerFromName "bip"
+		myBipPlusLayer = LayerManager.getLayerFromName "bip+"
+		myBoneLayer = LayerManager.getLayerFromName "bone"
+		myBonePlusLayer = LayerManager.getLayerFromName "bone+"
+		myConLayer = LayerManager.getLayerFromName "con"
+		myGeoLayer = LayerManager.getLayerFromName "geo"
 
-			select $pt_*
-			for i in selection do
-			(
-				myLayer.addnode i
-			)
-			clearSelection()
+		myBipLayer.setParent myTopLayer
+		myBipPlusLayer.setParent myTopLayer
+		myBoneLayer.setParent myTopLayer
+		myBonePlusLayer.setParent myTopLayer
+		myConLayer.setParent myTopLayer
+		myGeoLayer.setParent myTopLayer
 
-			select $line_*
-			for i in selection do
-			(
-				myLayer.addnode i
-			)
-			clearSelection()
-		)
-
-		if i == "con" then
-		(
-			-- myList = myRigStruct.myConList
-			-- try(for j in myList do myLayer.addnode j)catch()
-
-			select $con_*
-			for i in selection do
-			(
-				myLayer.addnode i
-			)
-			clearSelection()
-		)
-
-		if i == "geo" then
-		(
-			select geometry
-			select (for i in selection where classOf i == PolyMeshObject collect i)
-			
-			for i in selection do
-			(
-				myLayer.addnode i
-			)
-			clearSelection()
-		)
+		myBipPlusLayer.on = false
+		myBoneLayer.on = false
+		myBonePlusLayer.on = false
 	)
-
-	myTopLayer = LayerManager.getLayerFromName layer_name.selected
-	myBipLayer = LayerManager.getLayerFromName "bip"
-	myBipPlusLayer = LayerManager.getLayerFromName "bip+"
-	myBoneLayer = LayerManager.getLayerFromName "bone"
-	myBonePlusLayer = LayerManager.getLayerFromName "bone+"
-	myConLayer = LayerManager.getLayerFromName "con"
-	myGeoLayer = LayerManager.getLayerFromName "geo"
-
-	myBipLayer.setParent myTopLayer
-	myBipPlusLayer.setParent myTopLayer
-	myBoneLayer.setParent myTopLayer
-	myBonePlusLayer.setParent myTopLayer
-	myConLayer.setParent myTopLayer
-	myGeoLayer.setParent myTopLayer
-
-	myBipPlusLayer.on = false
-	myBoneLayer.on = false
-	myBonePlusLayer.on = false
-)
 
 --------------------------------------------------------------------------------------------------------
 --button-------------------------------------------------------------------------------------------------
 --------------------------------------------------------------------------------------------------------
-	GroupBox 'grp1' "Bone" pos:[8,8] width:144 height:120 align:#left
-	spinner 'spn_boneSize' "Bone Size" pos:[16,24] width:67 height:16 range:[1,20,5] type:#integer scale:1 align:#left
-	button 'btn_makeRootBone' "Make Root Bone" pos:[16,48] width:128 height:32 align:#left
-	button 'btn_openBoneTools' "Open Bone Tools" pos:[16,88] width:128 height:32 align:#left
-	
-	GroupBox 'grp2' "Rig" pos:[8,128] width:144 height:88 align:#left
-	edittext 'bip_name' "Biped : " pos:[16,144] width:128 height:24 align:#left
-	button 'btn_boneConnectToBonePT' "Bone Connect To Biped" pos:[16,176] width:128 height:32 align:#left
-	
-	GroupBox 'grp3' "Layer" pos:[8,216] width:144 height:88 align:#left
-	dropDownList 'layer_name' "" pos:[16,232] width:128 height:22 align:#left
-	button 'btn_layerArrange' "Layer Arrange" pos:[16,264] width:128 height:32 align:#left
-
 	on YG_rigTool open do
 	(
 		gc()
+
+		--Rig
 		bip_name.text = "Bip001"
 		structExecute()
 
+		--Layer
 		myCha = #("pc_male","pc_female")
 		layer_name.items = myCha
 	)
@@ -1594,7 +1600,7 @@ fn layerArrange =
 		undo on
 		(
 			makeBoneToBiped()
-			boneConnectToBip()
+			boneConnectToBiped()
 		)
 	)
 
