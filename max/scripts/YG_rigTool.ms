@@ -1494,12 +1494,6 @@ rollout YG_rigTool ("YG_rigTool " + myVersion) width:160 height:312
 
 			if i == "bone+" then
 			(
-				-- myList = myRigStruct.myRigList
-				-- try(for j in myList do myLayer.addnode j)catch()
-				
-				-- myList = myBonePTStruct.myAllList
-				-- try(for j in myList do myLayer.addnode j)catch()
-
 				select $pt_*
 				for i in selection do
 				(
@@ -1517,9 +1511,6 @@ rollout YG_rigTool ("YG_rigTool " + myVersion) width:160 height:312
 
 			if i == "con" then
 			(
-				-- myList = myRigStruct.myConList
-				-- try(for j in myList do myLayer.addnode j)catch()
-
 				select $con_*
 				for i in selection do
 				(
@@ -1531,7 +1522,7 @@ rollout YG_rigTool ("YG_rigTool " + myVersion) width:160 height:312
 			if i == "geo" then
 			(
 				select geometry
-				select (for i in selection where classOf i == PolyMeshObject collect i)
+				select (for i in selection where classOf i != BoneGeometry collect i)
 				
 				for i in selection do
 				(
