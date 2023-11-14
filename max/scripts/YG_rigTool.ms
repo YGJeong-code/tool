@@ -1550,6 +1550,9 @@ rollout YG_rigTool ("YG_rigTool " + myVersion) width:160 height:312
 		myBipPlusLayer.on = false
 		myBoneLayer.on = false
 		myBonePlusLayer.on = false
+
+		-- remove empty layers
+		macros.run "Scene Explorer" "SERemoveEmptyLayers"
 	)
 
 --------------------------------------------------------------------------------------------------------
@@ -1564,7 +1567,7 @@ rollout YG_rigTool ("YG_rigTool " + myVersion) width:160 height:312
 		structExecute()
 
 		--Layer
-		myCha = #("pc_male","pc_female")
+		myCha = #("PCM_BaseBody","PCF_BaseBody")
 		layer_name.items = myCha
 	)
 
