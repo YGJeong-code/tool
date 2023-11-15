@@ -722,6 +722,21 @@ rollout YG_rigTool ("YG_rigTool " + myVersion) width:160 height:312
 			paramWire.connect myDriver.transform.controller[#Scale] myDriven.transform.controller[#Scale] "Scale"
 		)
 	)
+
+	--weapon soket
+	fn weaponSoketBoneParent = 
+	(
+		$shield_l.parent = $lowerarm_l
+
+		$weapon_back_l.parent = $spine_04
+		$weapon_back_r.parent = $spine_04
+
+		$weapon_l.parent = $hand_l
+		$weapon_r.parent = $hand_r
+
+		$weapon_waist_l.parent = $pelvis
+		$weapon_waist_r.parent = $pelvis
+	)
 	
 --------------------------------------------------------------------------------------------------------
 --bone-------------------------------------------------------------------------------------------------
@@ -1451,6 +1466,18 @@ rollout YG_rigTool ("YG_rigTool " + myVersion) width:160 height:312
 				myLayer.setName i
 			)
 
+			if i == "geo" then
+			(
+				select geometry
+				select (for i in selection where classOf i != BoneGeometry and classOf i != Biped_Object collect i)
+				
+				for i in selection do
+				(
+					myLayer.addnode i
+				)
+				clearSelection()
+			)
+
 			if i == "bip" then
 			(
 				myList = myBipStruct.myAllList
@@ -1518,18 +1545,6 @@ rollout YG_rigTool ("YG_rigTool " + myVersion) width:160 height:312
 				)
 				clearSelection()
 			)
-
-			if i == "geo" then
-			(
-				select geometry
-				select (for i in selection where classOf i != BoneGeometry collect i)
-				
-				for i in selection do
-				(
-					myLayer.addnode i
-				)
-				clearSelection()
-			)
 		)
 
 		myTopLayer = LayerManager.getLayerFromName layer_name.selected
@@ -1567,7 +1582,7 @@ rollout YG_rigTool ("YG_rigTool " + myVersion) width:160 height:312
 		structExecute()
 
 		--Layer
-		myCha = #("PCM_BaseBody","PCF_BaseBody")
+		myCha = #("PCM_BaseBody","PCF_BaseBody","Weapon")
 		layer_name.items = myCha
 	)
 
