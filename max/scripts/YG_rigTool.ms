@@ -1,7 +1,7 @@
 /*
 YG_rigTool
 since 2023.10.24
-last updated 2023.11.09
+last updated 2023.11.15
 by YeonGyun,Jeong
 lupinxyz@gmail.com
 */
@@ -1509,14 +1509,17 @@ rollout YG_rigTool ("YG_rigTool " + myVersion) width:160 height:312
 
 			if i == "bone" then
 			(
-				myLayer.addnode $root
-
-				select (getAllChildren $root arr:(selection as array))
-				for i in selection do
+				if $root != undefined do
 				(
-					myLayer.addnode i
+					myLayer.addnode $root
+
+					select (getAllChildren $root arr:(selection as array))
+					for i in selection do
+					(
+						myLayer.addnode i
+					)
+					clearSelection()
 				)
-				clearSelection()
 			)
 
 			if i == "bone+" then
