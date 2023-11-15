@@ -1,7 +1,7 @@
 /*
 YG_fileTool
 since 2023.11.10
-last updated 2023.11.10
+last updated 2023.11.15
 by YeonGyun,Jeong
 lupinxyz@gmail.com
 */
@@ -10,11 +10,10 @@ myVersion = "v1.0"
 myMainFolder = ""
 myFolder = ""
 myFile = ""
-myFullPath = ""
 	
 try( destroydialog YG_fileTool ) catch()
 
-rollout YG_fileTool "YG_fileTool v1.0" width:528 height:296
+rollout YG_fileTool ("YG_fileTool " + myVersion) width:528 height:296
 (
 	listbox 'list_category_1' "Category1" pos:[8,8] width:96 height:10 align:#left
 	listbox 'list_category_2' "Category2" pos:[112,8] width:96 height:10 align:#left
@@ -24,7 +23,7 @@ rollout YG_fileTool "YG_fileTool v1.0" width:528 height:296
 	
 	edittext 'text_FolderPath' "Folder" pos:[8,168] width:512 height:24 align:#left
 
-	radiobuttons 'rdo_Prefix' "" pos:[15,200] width:108 height:16 labels:#("SM", "Rig") columns:2 align:#left
+	radiobuttons 'rdo_Prefix' "" pos:[15,200] width:108 height:16 labels:#("SM","Rig","Ani") columns:5 align:#left
 	edittext 'text_fileName' "File" pos:[8,225] width:512 height:24 align:#left
 
 	button 'btn_openFolder' "Open Folder" pos:[8,257] width:112 height:32 align:#left
@@ -75,18 +74,17 @@ rollout YG_fileTool "YG_fileTool v1.0" width:528 height:296
 		mylist_category_4 = #("01","02","03","04","05","06","07","08","09","10")
 		list_category_4.items = mylist_category_4
 		
-		--makeFileName		
+		--folder path & file naming
 		myPrefix = case rdo_Prefix.state of
 		(
 			1: "SM_"
 			2: "Rig_"
+			3: "Ani_"
 		)
-
-		--folder path & file naming
 		myFolder = myMainFolder + list_category_2.selected + "\\Model"
 		myFile = myPrefix + list_category_2.selected + ".max"
 
-		if list_category_3.selected != "" then
+		if list_category_3.selected != undefined then
 		(
 			myFolder = myMainFolder + list_category_2.selected + "\\" + list_category_3.selected + "\\Model"
 			myFile = myPrefix + list_category_2.selected + "_" + list_category_3.selected + list_category_4.selected + ".max"
@@ -104,6 +102,7 @@ rollout YG_fileTool "YG_fileTool v1.0" width:528 height:296
 			myFile = myPrefix + "PCM_BaseBody" + list_category_4.selected + ".max"
 		)
 		
+		-- text
 		text_folderPath.text = myFolder
 		text_fileName.text = myFile
 	)
@@ -113,17 +112,12 @@ rollout YG_fileTool "YG_fileTool v1.0" width:528 height:296
 	on YG_fileTool open do
 	(
 		gc()
-		
 		selectCategory()
 	)
 	on list_category_1 selected sel do
 		selectCategory()
 	on list_category_2 selected sel do
-	(
 		selectCategory()
-		YG_fileTool.list_category_3.selection = 1
-	)
-		
 	on list_category_3 selected sel do
 		selectCategory()
 	on list_category_4 selected sel do
@@ -143,7 +137,12 @@ rollout YG_fileTool "YG_fileTool v1.0" width:528 height:296
 	on btn_openFile pressed do
 	(
 		theName = getMAXOpenFileName filename:(myFolder + "\\" + myFile)
-		if theName != undefined do loadMaxFile theName
+		if theName != undefined then
+		(
+			print(theName)
+			loadMaxFile theName
+		)
+		else print("file no")
 	)
 
 	-- save file
@@ -161,7 +160,6 @@ rollout YG_fileTool "YG_fileTool v1.0" width:528 height:296
 		
 		theName = getMAXSaveFileName filename:(myFolder + "\\" + myFile)
 		if theName != undefined do saveMaxFile theName
-	
 	)
 )
 
