@@ -7,8 +7,8 @@ lupinxyz@gmail.com
 */
 
 myVersion = "v1.0"
+myMainFolder = ""
 myFolder = ""
-myLastFolder = ""
 myFile = ""
 myFullPath = ""
 	
@@ -16,15 +16,15 @@ try( destroydialog YG_fileTool ) catch()
 
 rollout YG_fileTool "YG_fileTool v1.0" width:528 height:296
 (
-	listbox 'category_1' "Category1" pos:[8,8] width:96 height:10 align:#left
-	listbox 'category_2' "Category2" pos:[112,8] width:96 height:10 align:#left
-	listbox 'category_3' "Category3" pos:[216,8] width:96 height:10 align:#left
-	listbox 'category_4' "Category4" pos:[320,8] width:96 height:10 align:#left
-	listbox 'category_5' "Category5" pos:[424,8] width:96 height:10 align:#left
+	listbox 'list_category_1' "Category1" pos:[8,8] width:96 height:10 align:#left
+	listbox 'list_category_2' "Category2" pos:[112,8] width:96 height:10 align:#left
+	listbox 'list_category_3' "Category3" pos:[216,8] width:96 height:10 align:#left
+	listbox 'list_category_4' "Category4" pos:[320,8] width:96 height:10 align:#left
+	listbox 'list_category_5' "Category5" pos:[424,8] width:96 height:10 align:#left
 	
 	edittext 'text_FolderPath' "Folder" pos:[8,168] width:512 height:24 align:#left
 
-	radiobuttons 'rdo_Prefix' "" pos:[15,200] width:108 height:16 labels:#("Model", "Rig") columns:2 align:#left
+	radiobuttons 'rdo_Prefix' "" pos:[15,200] width:108 height:16 labels:#("SM", "Rig") columns:2 align:#left
 	edittext 'text_fileName' "File" pos:[8,225] width:512 height:24 align:#left
 
 	button 'btn_openFolder' "Open Folder" pos:[8,257] width:112 height:32 align:#left
@@ -37,110 +37,72 @@ rollout YG_fileTool "YG_fileTool v1.0" width:528 height:296
 	fn selectCategory=
 	(
 		--category1
-		myCategory_1 = #("PC", "NPC", "Monster")
-		category_1.items = myCategory_1
+		mylist_category_1 = #("PC")
+		-- mylist_category_1 = #("PC", "NPC", "Monster")
+		list_category_1.items = mylist_category_1
 		
 		--category2
-		if category_1.selected == "PC" or category_1.selected == "NPC" then
+		if list_category_1.selected == "PC" then
 		(
-			myCategory_2 = #("Female", "Male")
+			mylist_category_2 = #("BaseBody_PCF", "BaseBody_PCM", "PC_Hair", "Fiona", "Lethita")
+			myMainFolder = "Z:\VindictusGFX\Content\_Prework\Characters\Player\\"
 		)
-		if category_1.selected == "Monster" then
-		(
-			myCategory_2 = #("Gnoll", "Goblin", "Kobold")
-		)
-		category_2.items = myCategory_2
+		-- if list_category_1.selected == "NPC" then
+		-- (
+		-- 	mylist_category_2 = #("NPC_Face", "NPC_Outfit", "NPC_Weapon")
+		-- 	myMainFolder = "Z:\VindictusGFX\Content\_Prework\Characters\NPC\\"
+		-- )
+		-- if list_category_1.selected == "Monster" then
+		-- (
+		-- 	mylist_category_2 = #("Gnoll", "Goblin", "Kobold")
+		-- 	myMainFolder = "Z:\VindictusGFX\Content\_Prework\Characters\Monster\\"
+		-- )
+		list_category_2.items = mylist_category_2
 		
 		--category3
-		if category_1.selected == "PC" and category_2.selected == "Female" then
+		mylist_category_3 = #("")
+		if list_category_2.selected == "Fiona" or list_category_2.selected == "Lethita" then
 		(
-			myCategory_3 = #("BaseBody", "Hair", "Fiona")
+			mylist_category_3 = #("Armor", "Face", "Weapon")
 		)
-		if category_1.selected == "PC" and category_2.selected == "Male" then
+		if list_category_2.selected == "PC_Hair" then
 		(
-			myCategory_3 = #("BaseBody", "Hair", "Lethita")
+			mylist_category_3 = #("PCF_Hair", "PCM_Hair")
 		)
-		if category_1.selected == "NPC" then
-		(
-			myCategory_3 = #("Face", "Hair", "Outfit", "Weapon")
-		)
-		if category_1.selected == "Monster" then
-		(
-			myCategory_3 = #("Public", "Type1", "Type2", "Type3")
-		)
-		category_3.items = myCategory_3
+		list_category_3.items = mylist_category_3
 		
 		--category4
-		if category_1.selected == "PC" then
-		(
-			myCategory_4 = #("")
-			
-			myFolder = "Z:\VindictusGFX\Content\_Prework\Characters\Player\\"
-		)
+		mylist_category_4 = #("01","02","03","04","05","06","07","08","09","10")
+		list_category_4.items = mylist_category_4
 		
-		if category_1.selected == "NPC" then
-		(
-			myFolder = "Z:\VindictusGFX\Content\_Prework\Characters\NPC\\"
-		)
-		if category_1.selected == "NPC" and category_2.selected == "Female" then
-		(
-			myCategory_4 = #("", "Female1")
-		)
-		if category_1.selected == "NPC" and category_2.selected == "Male" then
-		(
-			myCategory_4 = #("", "Aidan")
-		)
-		if category_1.selected == "Monster" then
-		(			
-			myFolder = "Z:\VindictusGFX\Content\_Prework\Characters\Monster\\"
-		)
-		if category_1.selected == "Monster" and category_3.selected != "Public" then
-		(
-			myCategory_4 = #("Public", "Normal", "Elite", "FieldBoss", "NamedBoss", "TribeBoss")
-		)
-		if category_1.selected == "Monster" and category_3.selected == "Public" then
-		(
-			myCategory_4 = #("")
-		)
-		category_4.items = myCategory_4
-		
-		--makeFileName
-		if category_2.selected == "Female" then
-		(
-			myGender = "F"
-		)
-		if category_2.selected == "Male" then
-		(
-			myGender = "M"
-		)
-		if category_2.selected != "Female" and category_2.selected != "Male" then
-		(
-			myGender = "_" + category_2.selected
-		)
-			
-			
-		if category_3.selected == "BaseBody" then
-		(
-			myLastFolder = category_3.selected + "_" + category_1.selected + myGender
-		)
-		else
-		(
-			myLastFolder = category_1.selected + myGender + "_" + category_3.selected
-		)
-		
-		if category_4.selected != "" then
-		(
-			myLastFolder = myLastFolder + "_" + category_4.selected
-		)
-		
+		--makeFileName		
 		myPrefix = case rdo_Prefix.state of
 		(
-			1: "Model_"
+			1: "SM_"
 			2: "Rig_"
 		)
 
-		myFile = myPrefix + category_1.selected + myGender + "_" + category_3.selected + ".max"
-		myFolder = myFolder + myLastFolder
+		--folder path & file naming
+		myFolder = myMainFolder + list_category_2.selected + "\\Model"
+		myFile = myPrefix + list_category_2.selected + ".max"
+
+		if list_category_3.selected != "" then
+		(
+			myFolder = myMainFolder + list_category_2.selected + "\\" + list_category_3.selected + "\\Model"
+			myFile = myPrefix + list_category_2.selected + "_" + list_category_3.selected + list_category_4.selected + ".max"
+		)
+		if list_category_2.selected == "PC_Hair" then
+		(
+			myFile = myPrefix + list_category_3.selected + list_category_4.selected + ".max"
+		)
+		if list_category_2.selected == "BaseBody_PCF" then
+		(
+			myFile = myPrefix + "PCF_BaseBody" + list_category_4.selected + ".max"
+		)
+		if list_category_2.selected == "BaseBody_PCM" then
+		(
+			myFile = myPrefix + "PCM_BaseBody" + list_category_4.selected + ".max"
+		)
 		
 		text_folderPath.text = myFolder
 		text_fileName.text = myFile
@@ -148,43 +110,43 @@ rollout YG_fileTool "YG_fileTool v1.0" width:528 height:296
 --------------------------------------------------------------------------------------------------------
 --button-------------------------------------------------------------------------------------------------
 --------------------------------------------------------------------------------------------------------	
-	
-
-
-
-	-- open folder
-
-	-- open file
-
-	-- save file
-
 	on YG_fileTool open do
 	(
 		gc()
 		
 		selectCategory()
 	)
-	on category_1 selected sel do
+	on list_category_1 selected sel do
 		selectCategory()
-	on category_2 selected sel do
+	on list_category_2 selected sel do
+	(
 		selectCategory()
-	on category_3 selected sel do
+		YG_fileTool.list_category_3.selection = 1
+	)
+		
+	on list_category_3 selected sel do
 		selectCategory()
-	on category_4 selected sel do
+	on list_category_4 selected sel do
 		selectCategory()
-	on category_5 selected sel do
+	on list_category_5 selected sel do
 		selectCategory()
 	on rdo_Prefix changed stat do
 		selectCategory()
+	
+	-- open folder
 	on btn_openFolder pressed do
 	(
 		ShellLaunch myFolder ""
 	)
+
+	-- open file
 	on btn_openFile pressed do
 	(
 		theName = getMAXOpenFileName filename:(myFolder + "\\" + myFile)
 		if theName != undefined do loadMaxFile theName
 	)
+
+	-- save file
 	on btn_saveFile pressed do
 	(
 		if doesDirectoryExist myFolder then
