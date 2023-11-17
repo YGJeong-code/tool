@@ -81,12 +81,13 @@ rollout YG_fileTool ("YG_fileTool " + myVersion) width:528 height:296
 			2: "Rig_"
 			3: "Proxy_"
 		)
-		myFolder = myMainFolder + list_category_2.selected + "Model"
+		myFolder = myMainFolder + list_category_2.selected + "\Model"
 		myFile = myPrefix + list_category_2.selected + ".max"
 
-		if list_category_3.selected != undefined then
+		if list_category_3.selected != "" then
 		(
-			myFolder = myMainFolder + list_category_2.selected + "\\" + list_category_3.selected + "Model"
+			print (list_category_3.selected)
+			myFolder = myMainFolder + list_category_2.selected + "\\" + list_category_3.selected + "\Model"
 			myFile = myPrefix + list_category_2.selected + "_" + list_category_3.selected + list_category_4.selected + ".max"
 		)
 		if list_category_2.selected == "PC_Hair" then
@@ -137,6 +138,10 @@ rollout YG_fileTool ("YG_fileTool " + myVersion) width:528 height:296
 	on btn_openFile pressed do
 	(
 		theName = getMAXOpenFileName filename:(myFolder + "\\" + myFile)
+		
+		print("foler : " + myFolder)
+		print("file : " + myFile)
+
 		if theName != undefined then
 			loadMaxFile theName
 		else print("file no")
