@@ -1,7 +1,7 @@
 /*
 YG_fileTool
 since 2023.11.10
-last updated 2023.11.15
+last updated 2023.11.17
 by YeonGyun,Jeong
 lupinxyz@gmail.com
 */
@@ -23,7 +23,7 @@ rollout YG_fileTool ("YG_fileTool " + myVersion) width:528 height:296
 	
 	edittext 'text_FolderPath' "Folder" pos:[8,168] width:512 height:24 align:#left
 
-	radiobuttons 'rdo_Prefix' "" pos:[15,200] width:108 height:16 labels:#("SM","Rig","Ani") columns:5 align:#left
+	radiobuttons 'rdo_Prefix' "" pos:[15,200] width:108 height:16 labels:#("SM","Rig","Proxy") columns:5 align:#left
 	edittext 'text_fileName' "File" pos:[8,225] width:512 height:24 align:#left
 
 	button 'btn_openFolder' "Open Folder" pos:[8,257] width:112 height:32 align:#left
@@ -79,14 +79,14 @@ rollout YG_fileTool ("YG_fileTool " + myVersion) width:528 height:296
 		(
 			1: "SM_"
 			2: "Rig_"
-			3: "Ani_"
+			3: "Proxy_"
 		)
-		myFolder = myMainFolder + list_category_2.selected + "\\Model"
+		myFolder = myMainFolder + list_category_2.selected + "Model"
 		myFile = myPrefix + list_category_2.selected + ".max"
 
 		if list_category_3.selected != undefined then
 		(
-			myFolder = myMainFolder + list_category_2.selected + "\\" + list_category_3.selected + "\\Model"
+			myFolder = myMainFolder + list_category_2.selected + "\\" + list_category_3.selected + "Model"
 			myFile = myPrefix + list_category_2.selected + "_" + list_category_3.selected + list_category_4.selected + ".max"
 		)
 		if list_category_2.selected == "PC_Hair" then
@@ -103,8 +103,8 @@ rollout YG_fileTool ("YG_fileTool " + myVersion) width:528 height:296
 		)
 		
 		-- text
-		text_folderPath.text = myFolder
-		text_fileName.text = myFile
+		YG_fileTool.text_folderPath.text = myFolder
+		YG_fileTool.text_fileName.text = myFile
 	)
 --------------------------------------------------------------------------------------------------------
 --button-------------------------------------------------------------------------------------------------
@@ -138,10 +138,7 @@ rollout YG_fileTool ("YG_fileTool " + myVersion) width:528 height:296
 	(
 		theName = getMAXOpenFileName filename:(myFolder + "\\" + myFile)
 		if theName != undefined then
-		(
-			print(theName)
 			loadMaxFile theName
-		)
 		else print("file no")
 	)
 
