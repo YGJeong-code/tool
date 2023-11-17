@@ -390,6 +390,8 @@ myBoneStruct = boneStruct()
 myBonePTStruct = bonePTStruct()
 myRigStruct = rigStruct()
 
+myLayerList = #("bip","bip+","bone","bone+","con","socket","geo")
+
 myVersion = "v1.0"
 	
 try( destroydialog YG_rigTool ) catch()
@@ -723,8 +725,8 @@ rollout YG_rigTool ("YG_rigTool " + myVersion) width:160 height:312
 		)
 	)
 
-	--weapon soket
-	fn weaponSoketBoneParent = 
+	--weapon socket
+	fn weaponSocketBoneParent = 
 	(
 		$shield_l.parent = $lowerarm_l
 
@@ -1455,7 +1457,7 @@ rollout YG_rigTool ("YG_rigTool " + myVersion) width:160 height:312
 		)
 
 		--
-		myLayerList = #("bip","bip+","bone","bone+","con","geo")
+		-- myLayerList = #("bip","bip+","bone","bone+","con","geo")
 
 		for i in myLayerList do
 		(
@@ -1548,6 +1550,17 @@ rollout YG_rigTool ("YG_rigTool " + myVersion) width:160 height:312
 				)
 				clearSelection()
 			)
+
+			if i == "socket" then
+			(
+				select $con_weapon_*
+				for i in selection do
+				(
+					myLayer.addnode i
+				)
+				clearSelection()
+			)
+
 		)
 
 		myTopLayer = LayerManager.getLayerFromName layer_name.selected
@@ -1556,6 +1569,7 @@ rollout YG_rigTool ("YG_rigTool " + myVersion) width:160 height:312
 		myBoneLayer = LayerManager.getLayerFromName "bone"
 		myBonePlusLayer = LayerManager.getLayerFromName "bone+"
 		myConLayer = LayerManager.getLayerFromName "con"
+		mySocketLayer = LayerManager.getLayerFromName "socket"
 		myGeoLayer = LayerManager.getLayerFromName "geo"
 
 		myBipLayer.setParent myTopLayer
@@ -1563,6 +1577,7 @@ rollout YG_rigTool ("YG_rigTool " + myVersion) width:160 height:312
 		myBoneLayer.setParent myTopLayer
 		myBonePlusLayer.setParent myTopLayer
 		myConLayer.setParent myTopLayer
+		mySocketLayer.setParent myTopLayer
 		myGeoLayer.setParent myTopLayer
 
 		myBipPlusLayer.on = false
