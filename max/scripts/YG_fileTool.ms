@@ -13,7 +13,7 @@ myFile = ""
 	
 try( destroydialog YG_fileTool ) catch()
 
-rollout YG_fileTool ("YG_fileTool " + myVersion) width:528 height:296
+rollout YG_fileTool "YG_fileTool v1.0" width:528 height:320
 (
 	listbox 'list_category_1' "Category1" pos:[8,8] width:96 height:10 align:#left
 	listbox 'list_category_2' "Category2" pos:[112,8] width:96 height:10 align:#left
@@ -21,14 +21,18 @@ rollout YG_fileTool ("YG_fileTool " + myVersion) width:528 height:296
 	listbox 'list_category_4' "Category4" pos:[320,8] width:96 height:10 align:#left
 	listbox 'list_category_5' "Category5" pos:[424,8] width:96 height:10 align:#left
 	
-	edittext 'text_FolderPath' "Folder" pos:[8,168] width:512 height:24 align:#left
+	spinner 'spn_category3' "" pos:[216,168] width:96 height:16 range:[1,99,1] type:#integer scale:1 align:#left
+	spinner 'spn_category4' "" pos:[320,168] width:96 height:16 range:[1,99,1] type:#integer scale:1 align:#left
+	spinner 'spn_category5' "" pos:[424,168] width:96 height:16 range:[1,99,1] type:#integer scale:1 align:#left
+	
+	edittext 'text_FolderPath' "Folder" pos:[8,192] width:512 height:24 align:#left
 
-	radiobuttons 'rdo_Prefix' "" pos:[15,200] width:108 height:16 labels:#("SM","Rig","Proxy") columns:5 align:#left
-	edittext 'text_fileName' "File" pos:[8,225] width:512 height:24 align:#left
+	radiobuttons 'rdo_Prefix' "" pos:[15,224] width:295 height:16 labels:#("SM", "Rig", "Proxy") columns:5 align:#left
+	edittext 'text_fileName' "File" pos:[8,249] width:512 height:24 align:#left
 
-	button 'btn_openFolder' "Open Folder" pos:[8,257] width:112 height:32 align:#left
-	button 'btn_openFile' "Open File" pos:[120,257] width:200 height:32 align:#left
-	button 'btn_saveFile' "Save File" pos:[320,257] width:200 height:32 align:#left
+	button 'btn_openFolder' "Open Folder" pos:[8,281] width:112 height:32 align:#left
+	button 'btn_openFile' "Open File" pos:[120,281] width:200 height:32 align:#left
+	button 'btn_saveFile' "Save File" pos:[320,281] width:200 height:32 align:#left
 
 --------------------------------------------------------------------------------------------------------
 --function-------------------------------------------------------------------------------------------------
@@ -36,7 +40,7 @@ rollout YG_fileTool ("YG_fileTool " + myVersion) width:528 height:296
 	fn selectCategory=
 	(
 		--category1
-		mylist_category_1 = #("PC")
+		mylist_category_1 = #("PC", "Monster")
 		-- mylist_category_1 = #("PC", "NPC", "Monster")
 		list_category_1.items = mylist_category_1
 		
@@ -51,11 +55,12 @@ rollout YG_fileTool ("YG_fileTool " + myVersion) width:528 height:296
 		-- 	mylist_category_2 = #("NPC_Face", "NPC_Outfit", "NPC_Weapon")
 		-- 	myMainFolder = "Z:\VindictusGFX\Content\_Prework\Characters\NPC\\"
 		-- )
-		-- if list_category_1.selected == "Monster" then
-		-- (
-		-- 	mylist_category_2 = #("Gnoll", "Goblin", "Kobold")
-		-- 	myMainFolder = "Z:\VindictusGFX\Content\_Prework\Characters\Monster\\"
-		-- )
+		if list_category_1.selected == "Monster" then
+		(
+			mylist_category_2 = #("Gnoll")
+			-- mylist_category_2 = #("Gnoll", "Goblin", "Kobold")
+			myMainFolder = "Z:\VindictusGFX\Content\_Prework\Characters\Monster\\"
+		)
 		list_category_2.items = mylist_category_2
 		
 		--category3
@@ -68,11 +73,31 @@ rollout YG_fileTool ("YG_fileTool " + myVersion) width:528 height:296
 		(
 			mylist_category_3 = #("PCF_Hair", "PCM_Hair")
 		)
+		if list_category_1.selected == "Monster" then
+		(
+			mylist_category_3 = #("Public", "Type")
+		)
 		list_category_3.items = mylist_category_3
-		
+
 		--category4
-		mylist_category_4 = #("01","02","03","04","05","06","07","08","09","10")
+		mylist_category_4 = #("")
+		if list_category_3.selected == "Type" then
+		(
+			mylist_category_4 = #("Public", "Normal", "Elite", "FieldBoss", "NamedBoss", "TribeBoss")
+		)
 		list_category_4.items = mylist_category_4
+		
+		--category5
+		mylist_category_5 = #("")
+		if list_category_1.selected == "PC" then
+		(
+			mylist_category_5 = #("01","02","03","04","05","06","07","08","09","10")
+		)
+		if list_category_1.selected == "Monster" then
+		(
+			mylist_category_5 = #("","Weapon")
+		)
+		list_category_5.items = mylist_category_5
 		
 		--folder path & file naming
 		myPrefix = case rdo_Prefix.state of
@@ -88,19 +113,29 @@ rollout YG_fileTool ("YG_fileTool " + myVersion) width:528 height:296
 		(
 			print (list_category_3.selected)
 			myFolder = myMainFolder + list_category_2.selected + "\\" + list_category_3.selected + "\Model"
-			myFile = myPrefix + list_category_2.selected + "_" + list_category_3.selected + list_category_4.selected + ".max"
+			myFile = myPrefix + list_category_2.selected + "_" + list_category_3.selected + list_category_5.selected + ".max"
 		)
 		if list_category_2.selected == "PC_Hair" then
 		(
-			myFile = myPrefix + list_category_3.selected + list_category_4.selected + ".max"
+			myFile = myPrefix + list_category_3.selected + list_category_5.selected + ".max"
 		)
 		if list_category_2.selected == "BaseBody_PCF" then
 		(
-			myFile = myPrefix + "PCF_BaseBody" + list_category_4.selected + ".max"
+			myFile = myPrefix + "PCF_BaseBody" + list_category_5.selected + ".max"
 		)
 		if list_category_2.selected == "BaseBody_PCM" then
 		(
-			myFile = myPrefix + "PCM_BaseBody" + list_category_4.selected + ".max"
+			myFile = myPrefix + "PCM_BaseBody" + list_category_5.selected + ".max"
+		)
+		if list_category_3.selected == "Type" then
+		(
+			spn4 = formattedPrint YG_fileTool.spn_category4.value format:"02d"
+			myFile = myPrefix + list_category_2.selected + "_" + list_category_3.selected + spn_category3.value as string + "_" + list_category_4.selected + spn4 + ".max"
+			if list_category_5.selected != "" then
+			(
+				spn5 = formattedPrint YG_fileTool.spn_category5.value format:"02d"
+				myFile = myPrefix + list_category_2.selected + "_" + list_category_3.selected + spn_category3.value as string + "_" + list_category_4.selected + spn4 + "_" + list_category_5.selected + spn5 + ".max"
+			)
 		)
 		
 		-- text
@@ -110,6 +145,13 @@ rollout YG_fileTool ("YG_fileTool " + myVersion) width:528 height:296
 --------------------------------------------------------------------------------------------------------
 --button-------------------------------------------------------------------------------------------------
 --------------------------------------------------------------------------------------------------------	
+	
+	-- open folder
+
+	-- open file
+
+	-- save file
+
 	on YG_fileTool open do
 	(
 		gc()
@@ -125,29 +167,29 @@ rollout YG_fileTool ("YG_fileTool " + myVersion) width:528 height:296
 		selectCategory()
 	on list_category_5 selected sel do
 		selectCategory()
+	on spn_category3 changed val do
+		selectCategory()
+	on spn_category4 changed val do
+		selectCategory()
+	on spn_category5 changed val do
+		selectCategory()
 	on rdo_Prefix changed stat do
 		selectCategory()
-	
-	-- open folder
 	on btn_openFolder pressed do
 	(
 		ShellLaunch myFolder ""
 	)
-
-	-- open file
 	on btn_openFile pressed do
 	(
 		theName = getMAXOpenFileName filename:(myFolder + "\\" + myFile)
 		
 		print("foler : " + myFolder)
 		print("file : " + myFile)
-
+	
 		if theName != undefined then
 			loadMaxFile theName
 		else print("file no")
 	)
-
-	-- save file
 	on btn_saveFile pressed do
 	(
 		if doesDirectoryExist myFolder then
