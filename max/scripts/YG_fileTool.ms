@@ -1,7 +1,7 @@
 /*
 YG_fileTool
 since 2023.11.10
-last updated 2023.11.22
+last updated 2023.11.24
 by YeonGyun,Jeong
 lupinxyz@gmail.com
 */
@@ -48,7 +48,7 @@ rollout YG_fileTool "YG_fileTool v1.0" width:528 height:320
 		--category2
 		if list_category_1.selected == "PC" then
 		(
-			mylist_category_2 = #("BaseBody_PCF", "BaseBody_PCM", "PC_Hair", "Fiona", "Lethita")
+			mylist_category_2 = #("BaseBody_PCF", "BaseBody_PCM", "PC_Hair", "Fiona", "Lethita", "", "", "", "")
 			myMainFolder = "Z:\VindictusGFX\Content\VindictusRoot\Characters\Player\\"
 		)
 		-- if list_category_1.selected == "NPC" then
@@ -58,7 +58,7 @@ rollout YG_fileTool "YG_fileTool v1.0" width:528 height:320
 		-- )
 		if list_category_1.selected == "Monster" then
 		(
-			mylist_category_2 = #("Gnoll")
+			mylist_category_2 = #("Gnoll","Goblin","Kobold", "", "", "", "", "", "")
 			-- mylist_category_2 = #("Gnoll", "Goblin", "Kobold")
 			myMainFolder = "Z:\VindictusGFX\Content\VindictusRoot\Characters\Monster\\"
 		)
@@ -72,11 +72,11 @@ rollout YG_fileTool "YG_fileTool v1.0" width:528 height:320
 		)
 		if list_category_2.selected == "PC_Hair" then
 		(
-			mylist_category_3 = #("PCF_Hair", "PCM_Hair")
+			mylist_category_3 = #("PCF_Hair", "PCM_Hair", "")
 		)
 		if list_category_1.selected == "Monster" then
 		(
-			mylist_category_3 = #("Public", "Type")
+			mylist_category_3 = #("Public", "Type", "")
 		)
 		list_category_3.items = mylist_category_3
 
@@ -96,7 +96,7 @@ rollout YG_fileTool "YG_fileTool v1.0" width:528 height:320
 		)
 		if list_category_1.selected == "Monster" then
 		(
-			mylist_category_5 = #("","Weapon")
+			mylist_category_5 = #("", "Weapon", "", "", "", "", "", "", "", "")
 		)
 		list_category_5.items = mylist_category_5
 		
@@ -118,10 +118,20 @@ rollout YG_fileTool "YG_fileTool v1.0" width:528 height:320
 		myFolder = myMainFolder + list_category_2.selected + "\Model"
 		myFile = myPrefix + list_category_2.selected + mySubfix
 
-		if list_category_3.selected != "" then
+		if list_category_3.selected != "" and list_category_3.selected != undefined then
 		(
-			print (list_category_3.selected)
+			-- print (list_category_3.selected)
 			myFolder = myMainFolder + list_category_2.selected + "\\" + list_category_3.selected + "\Model"
+
+			if list_category_3.selected == "Type" then
+			(
+				temp3 = list_category_3.selected + spn_category3.value as string
+
+				spn4 = formattedPrint YG_fileTool.spn_category4.value format:"02d"
+				temp4 = list_category_4.selected + spn4
+
+				myFolder = myMainFolder + list_category_2.selected + "\\" + temp3 + "\\" + temp4 + "\Model"
+			)
 			myFile = myPrefix + list_category_2.selected + "_" + list_category_3.selected + list_category_5.selected + mySubfix
 		)
 		if list_category_2.selected == "PC_Hair" then
@@ -157,6 +167,7 @@ rollout YG_fileTool "YG_fileTool v1.0" width:528 height:320
 	on YG_fileTool open do
 	(
 		gc()
+		clearListener()
 		selectCategory()
 	)
 	on list_category_1 selected sel do
@@ -234,7 +245,7 @@ rollout YG_fileTool "YG_fileTool v1.0" width:528 height:320
 		FBXExporterSetParam "ShowWarnings" false
 		FBXExporterSetParam "GenerateLog" false
 		--FBX File Format----------------------------------------------------------------
-		FBXExporterSetParam "ASCII" true
+		FBXExporterSetParam "ASCII" false
 		FBXExporterSetParam "FileVersion" "FBX201300"
 
 		exportFile (myFolder + "\\" + myFile) #noPrompt quiet:true selectedOnly:true
