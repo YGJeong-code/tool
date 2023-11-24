@@ -1,7 +1,7 @@
 /*
 YG_rigTool
 since 2023.10.24
-last updated 2023.11.15
+last updated 2023.11.24
 by YeonGyun,Jeong
 lupinxyz@gmail.com
 */
@@ -391,12 +391,13 @@ myBonePTStruct = bonePTStruct()
 myRigStruct = rigStruct()
 
 myLayerList = #("bip","bip+","bone","bone+","con","socket","geo")
+myTopLayerList = #("PCM_BaseBody","PCF_BaseBody","Weapon","Monster")
 
 myVersion = "v1.0"
 	
 try( destroydialog YG_rigTool ) catch()
 
-rollout YG_rigTool ("YG_rigTool " + myVersion) width:160 height:312
+rollout YG_rigTool "YG_rigTool v1.0" width:160 height:368
 (
 	GroupBox 'grp1' "Bone" pos:[8,8] width:144 height:120 align:#left
 	spinner 'spn_boneSize' "Bone Size" pos:[16,24] width:67 height:16 range:[1,20,5] type:#integer scale:1 align:#left
@@ -408,8 +409,11 @@ rollout YG_rigTool ("YG_rigTool " + myVersion) width:160 height:312
 	button 'btn_boneConnectToBonePT' "Bone Connect To Biped" pos:[16,176] width:128 height:32 align:#left
 	
 	GroupBox 'grp3' "Layer" pos:[8,216] width:144 height:88 align:#left
-	dropDownList 'layer_name' "" pos:[16,232] width:128 height:22 align:#left
+	dropdownList 'layer_name' "" pos:[16,232] width:128 height:22 align:#left
 	button 'btn_layerArrange' "Layer Arrange" pos:[16,264] width:128 height:32 align:#left
+
+	groupBox 'grp6' "Tools" pos:[8,304] width:144 height:56 align:#left
+	button 'btn_namingTool' "Naming Tool" pos:[16,320] width:128 height:32 align:#left
 --------------------------------------------------------------------------------------------------------
 --function------------------------------------------------------------------------------------------------
 --------------------------------------------------------------------------------------------------------
@@ -1250,17 +1254,6 @@ rollout YG_rigTool ("YG_rigTool " + myVersion) width:160 height:312
 			)catch()
 		)
 
-		--con_bip
-		point name:"con_bip" size:10 cross:off box:on axistripod:off pos:[0,0,0] wirecolor:(color 14 255 2)
-		$con_bip.boneEnable=false
-		append myRigStruct.myConList $con_bip
-
-		makeConst "pos" $root $con_bip
-		makeConst "ori" $root $con_bip
-
-		myBipStruct.myBip.controller.figureMode =  false
-		myBipStruct.myBip.parent = $con_bip
-
 		--tw con connect
 		--arm left
 		$pt_tw_arm_main_l.parent = myBipStruct.myClavicleL
@@ -1272,7 +1265,7 @@ rollout YG_rigTool ("YG_rigTool " + myVersion) width:160 height:312
 		
 		makeConst "zero" $con_arm_2_l $con_arm_2_l
 		makeConst "zero" $con_arm_3_l $con_arm_3_l
-		
+
 
 		$pt_upperarm_l.parent = $con_arm_1_l
 		$pt_lowerarm_l.parent = $con_arm_2_l
@@ -1361,59 +1354,6 @@ rollout YG_rigTool ("YG_rigTool " + myVersion) width:160 height:312
 			$con_leg_3_r.parent = myBipStruct.myFootR
 			$pt_foot_r.parent = $con_leg_3_r
 		)
-
-		--con_root
-		point name:"con_root" size:100 cross:off box:on axistripod:on pos:[0,0,0] wirecolor:(color 14 255 2)
-		$con_root.boneEnable=false
-		append myRigStruct.myConList $con_root
-
-		ca = attributes rootMotion
-		(
-			parameters main rollout:params
-			(
-				rootParent type:#float ui:sld_com
-				rootRotation type:#float ui:spn_rotation
-			)
-
-			rollout params "Root Parameters" width:264 height:208
-			(
-				GroupBox 'grp2' "COM To Root" pos:[5,5] width:155 height:57 align:#left
-				slider 'sld_com' "" pos:[46,21] width:80 height:25 range:[0,100,0] align:#left
-				button 'btn_on' "on" pos:[124,21] width:28 height:21 align:#left
-				button 'btn_off' "off" pos:[13,21] width:28 height:21 align:#left
-
-				GroupBox 'grp1' "COM Rotation Z" pos:[5,66] width:155 height:64 align:#left
-				spinner 'spn_rotation' "" pos:[9,80] width:145 height:16 range:[-180,180,0] scale:1 align:#left
-				button 'btn1' "-180" pos:[9,99] width:28 height:21 align:#left
-				button 'btn2' "-90" pos:[45,99] width:30 height:21 align:#left
-				button 'btn3' "90" pos:[86,99] width:30 height:21 align:#left
-				button 'btn4' "180" pos:[126,99] width:30 height:21 align:#left
-
-
-				on btn_on pressed do
-					sld_com.value=100
-				on btn_off pressed do
-					sld_com.value=0
-				on btn1 pressed do
-					spn_rotation.value=-180
-				on btn2 pressed do
-					spn_rotation.value=-90
-				on btn3 pressed do
-					spn_rotation.value=90
-				on btn4 pressed do
-					spn_rotation.value=180
-			)
-		)
-		addModifier $con_root (EmptyModifier())
-		custAttributes.add $con_root.modifiers[1] ca
-
-		makeConst "pos" $con_bip $con_root
-		makeConst "ori" $con_bip $con_root
-		makeConst "zero" $con_root $con_root
-
-		paramWire.connect $con_root.modifiers[#Attribute_Holder].rootMotion[#rootParent] $con_bip.pos.controller[#Position_Weight_0] "rootParent"
-		paramWire.connect $con_root.modifiers[#Attribute_Holder].rootMotion[#rootParent] $con_bip.rotation.controller[#Orientation_Weight_0] "rootParent"
-		paramWire.connect $con_root.modifiers[#Attribute_Holder].rootMotion[#rootRotation] $con_root.rotation.controller.Frozen_Rotation.controller[#Z_Rotation] "degTorad(rootRotation)"
 
 		/*
 		--inherit scale off
@@ -1594,16 +1534,15 @@ rollout YG_rigTool ("YG_rigTool " + myVersion) width:160 height:312
 	on YG_rigTool open do
 	(
 		gc()
-
+		clearListener()
+	
 		--Rig
 		bip_name.text = "Bip001"
 		structExecute()
-
+	
 		--Layer
-		myCha = #("PCM_BaseBody","PCF_BaseBody","Weapon")
-		layer_name.items = myCha
+		layer_name.items = myTopLayerList
 	)
-
 	on btn_makeRootBone pressed do
 	(
 		undo on
@@ -1616,12 +1555,10 @@ rollout YG_rigTool ("YG_rigTool " + myVersion) width:160 height:312
 			delete myPoint
 		)
 	)
-
 	on btn_openBoneTools pressed do
 	(
 		macros.run "Animation Tools" "BoneAdjustmentTools"
 	)
-
 	on btn_boneConnectToBonePT pressed do
 	(
 		undo on
@@ -1630,13 +1567,17 @@ rollout YG_rigTool ("YG_rigTool " + myVersion) width:160 height:312
 			boneConnectToBiped()
 		)
 	)
-
 	on btn_layerArrange pressed do
 	(
 		undo on
 		(
 			layerArrange()
 		)
+	)
+	on btn_namingTool pressed do
+	(
+		scripts = "Z:\\VindictusGFX\\Content\\tool\\max\\scripts\\YG_namingTool.ms"
+		executeScriptFile scripts
 	)
 )
 
