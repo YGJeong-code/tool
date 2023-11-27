@@ -393,6 +393,9 @@ myRigStruct = rigStruct()
 myLayerList = #("bip","bip+","bone","bone+","con","socket","geo")
 myTopLayerList = #("PCM_BaseBody","PCF_BaseBody","Weapon","Monster")
 
+myName = "Bip001"
+myBip = $Bip001
+
 myVersion = "v1.0"
 	
 try( destroydialog YG_rigTool ) catch()
@@ -1241,6 +1244,48 @@ rollout YG_rigTool "YG_rigTool v1.0" width:160 height:368
 
 		--make twist bone
 		makeTwistBone()
+
+		/*
+		--breast
+		myPoint = point name:"pt_link_spine" size:10 cross:on box:off axistripod:off pos:myBipStruct.mySpine2.transform.pos
+		myPoint.parent = myBipStruct.mySpine2
+		
+		myPoint = point name:"pt_link_breast" size:10 cross:on box:off axistripod:off pos:myBipStruct.mySpine2.transform.pos
+		myPoint.parent = $pt_link_spine
+		myPoint[3][2][1].value = 90
+		myPoint[3][2][3].value = -90
+
+		myPoint = point name:"pt_breast_l" size:10 cross:off box:off axistripod:on pos:$pt_link_breast.transform.pos
+		myPoint.transform = $pt_link_breast.transform
+		myPoint.pos.x = $pt_tw_thigh_l.pos.x
+		myPoint.parent = $pt_link_breast
+		makeBoneHalfSize myPoint "breast_l"
+		myBone = $breast_l
+		myBone.parent = $spine_03
+		makeConst "pos" myBone myPoint
+		makeConst "ori" myBone myPoint
+		paramWire.connect $pt_breast_l.transform.controller[#Scale] $breast_l.transform.controller[#Scale] "Scale"
+		setInheritanceFlags $pt_breast_l #{1..6}
+
+		myPoint = point name:"pt_breast_r" size:10 cross:off box:off axistripod:on pos:$pt_link_breast.transform.pos
+		myPoint.transform = $pt_link_breast.transform
+		myPoint.pos.x = $pt_tw_thigh_r.pos.x
+		myPoint.parent = $pt_link_breast
+		makeBoneHalfSize myPoint "breast_r"
+		myBone = $breast_r
+		myBone.parent = $spine_03
+		makeConst "pos" myBone myPoint
+		makeConst "ori" myBone myPoint
+		conTransformMirror $pt_breast_l
+		paramWire.connect $pt_breast_r.transform.controller[#Scale] $breast_r.transform.controller[#Scale] "Scale"
+		setInheritanceFlags $pt_breast_r #{1..6}
+
+		myPointList = #($pt_link_spine,$pt_link_breast,$pt_breast_l,$pt_breast_r)
+		myBoneList = #($breast_l,$breast_r)
+
+		for i in myPointList do append myRigStruct.myRigList i
+		for i in myBoneList do append myRigStruct.myBoneList i
+		*/
 	)
 
 	--bone connect to biped
@@ -1253,11 +1298,15 @@ rollout YG_rigTool "YG_rigTool v1.0" width:160 height:368
 			makeConst "pos" myBoneStruct.myAllList[i] myBonePTStruct.myAllList[i]
 			)catch()
 		)
+		-- neck, head
+		$neck_01.pos.controller.relative = off
+		$neck_02.pos.controller.relative = off
+		$head.pos.controller.relative = off
 
 		--tw con connect
 		--arm left
 		$pt_tw_arm_main_l.parent = myBipStruct.myClavicleL
-		$line_arm_l.parent = $con_bip
+		$line_arm_l.parent = myBip
 		
 		makeConst "pos_active" $con_arm_1_l myBipStruct.myUpperArmL
 		$con_arm_2_l.parent = myBipStruct.myForeArmL
@@ -1265,7 +1314,6 @@ rollout YG_rigTool "YG_rigTool v1.0" width:160 height:368
 		
 		makeConst "zero" $con_arm_2_l $con_arm_2_l
 		makeConst "zero" $con_arm_3_l $con_arm_3_l
-
 
 		$pt_upperarm_l.parent = $con_arm_1_l
 		$pt_lowerarm_l.parent = $con_arm_2_l
@@ -1280,16 +1328,15 @@ rollout YG_rigTool "YG_rigTool v1.0" width:160 height:368
 		)catch()
 
 		--arm right
-		$pt_tw_arm_main_r.parent = myBonePTStruct.myClavicleR
-		$line_arm_r.parent = $con_bip
+		$pt_tw_arm_main_r.parent = myBipStruct.myClavicleR
+		$line_arm_r.parent = myBip
 		
 		makeConst "pos_active" $con_arm_1_r myBipStruct.myUpperArmR
 		$con_arm_2_r.parent = myBipStruct.myForeArmR
 		$con_arm_3_r.parent = myBipStruct.myHandR
 		
 		makeConst "zero" $con_arm_2_r $con_arm_2_r
-		makeConst "zero" $con_arm_3_r $con_arm_3_r
-		
+		makeConst "zero" $con_arm_3_r $con_arm_3_r		
 
 		$pt_upperarm_r.parent = $con_arm_1_r
 		$pt_lowerarm_r.parent = $con_arm_2_r
@@ -1305,7 +1352,7 @@ rollout YG_rigTool "YG_rigTool v1.0" width:160 height:368
 
 		--leg left
 		$pt_tw_leg_main_l.parent = myBipStruct.myBip
-		$line_leg_l.parent = $con_bip
+		$line_leg_l.parent = myBip
 		$con_leg_2_l.parent = myBipStruct.myCalfL
 		$pt_link_thigh_l.parent = $con_leg_1_l
 		$pt_thigh_l.parent = $con_leg_1_l
@@ -1331,7 +1378,7 @@ rollout YG_rigTool "YG_rigTool v1.0" width:160 height:368
 		
 		--leg right
 		$pt_tw_leg_main_r.parent = myBipStruct.myBip
-		$line_leg_r.parent = $con_bip
+		$line_leg_r.parent = myBip
 		$con_leg_2_r.parent = myBipStruct.myCalfR
 		$pt_link_thigh_r.parent = $con_leg_1_r
 		$pt_thigh_r.parent = $con_leg_1_r
@@ -1354,8 +1401,7 @@ rollout YG_rigTool "YG_rigTool v1.0" width:160 height:368
 			$con_leg_3_r.parent = myBipStruct.myFootR
 			$pt_foot_r.parent = $con_leg_3_r
 		)
-
-		/*
+		
 		--inherit scale off
 		for i in myBoneStruct.myAllList do
 		(
@@ -1368,8 +1414,7 @@ rollout YG_rigTool "YG_rigTool v1.0" width:160 height:368
 		for i in myRigStruct.myBoneList do
 		(
 			try(i.boneEnable=false)catch()
-		)
-		*/
+		)		
 	)
 
 --------------------------------------------------------------------------------------------------------
