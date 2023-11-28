@@ -49,18 +49,18 @@ rollout YG_fileTool "YG_fileTool v1.0" width:528 height:320
 		if list_category_1.selected == "PC" then
 		(
 			mylist_category_2 = #("BaseBody_PCF", "BaseBody_PCM", "PC_Hair", "Fiona", "Lethita", "", "", "", "")
-			myMainFolder = "Z:\VindictusGFX\Content\VindictusRoot\Characters\Player\\"
+			myMainFolder = "Z:\VindictusGFX\Content\VindictusRoot\Character\Player\\"
 		)
 		-- if list_category_1.selected == "NPC" then
 		-- (
 		-- 	mylist_category_2 = #("NPC_Face", "NPC_Outfit", "NPC_Weapon")
-		-- 	myMainFolder = "Z:\VindictusGFX\Content\VindictusRoot\Characters\NPC\\"
+		-- 	myMainFolder = "Z:\VindictusGFX\Content\VindictusRoot\Character\NPC\\"
 		-- )
 		if list_category_1.selected == "Monster" then
 		(
 			mylist_category_2 = #("Gnoll","Goblin","Kobold", "", "", "", "", "", "")
 			-- mylist_category_2 = #("Gnoll", "Goblin", "Kobold")
-			myMainFolder = "Z:\VindictusGFX\Content\VindictusRoot\Characters\Monster\\"
+			myMainFolder = "Z:\VindictusGFX\Content\VindictusRoot\Character\Monster\\"
 		)
 		list_category_2.items = mylist_category_2
 		
