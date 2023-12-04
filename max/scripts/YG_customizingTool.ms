@@ -1,7 +1,7 @@
 /*
 Customizing Tool
 since 2019.10.10
-last updated 2023.11.28
+last updated 2023.12.04
 by YeonGyun,Jeong
 lupinxyz@gmail.com
 */
@@ -117,11 +117,8 @@ rollout YG_customizingTool ("YG_customizingTool " + myVersion) width:544 height:
 		)
 	)
 
-	on YG_customizingTool open do
+	fn getBipTransform =
 	(
-		uiEnabled(False)
-		edt_name.text = "Bip001"
-	
 		myScale = bipScale()
 			
 		myScale.LClavicle = biped.getTransform (execute("$"+edt_name.text+"LClavicle")) #scale
@@ -153,6 +150,17 @@ rollout YG_customizingTool ("YG_customizingTool " + myVersion) width:544 height:
 		myBip = execute("$"+edt_name.text)
 		myScale.myCom = biped.getTransform myBip #pos
 		myScale.myComEdit = biped.getTransform myBip #pos
+	)
+
+	on YG_customizingTool open do
+	(
+		gc()
+		clearListener()
+
+		uiEnabled(False)
+		edt_name.text = "Bip001"
+	
+		getBipTransform()
 	)
 	on btn_on pressed do
 	(
@@ -473,6 +481,10 @@ rollout YG_customizingTool ("YG_customizingTool " + myVersion) width:544 height:
 		(
 			myBip = execute("$"+edt_name.text+i)
 			biped.setTransform myBip #scale [myScale.LThighEdit[1]*val, myScale.LThighEdit[2], myScale.LThighEdit[3]] false
+
+			print (myScale.LThighEdit[1])
+			print (myScale.LThighEdit[2])
+			print (myScale.LThighEdit[3])
 		)
 	
 		myThigh = execute("$"+edt_name.text+"LThigh")
@@ -485,7 +497,7 @@ rollout YG_customizingTool ("YG_customizingTool " + myVersion) width:544 height:
 	
 		myBip = execute("$"+edt_name.text)
 		myTrans = biped.getTransform myBip #pos
-		myDist = myScale.myCom[3]+myDis-myScale.myThighDis
+		myDist = myScale.myCom[3] + myDis - myScale.myThighDis
 		biped.setTransform myBip #pos [myTrans[1], myTrans[2], myDist] false
 		
 		val = sld_thigh.value
@@ -701,6 +713,8 @@ rollout YG_customizingTool ("YG_customizingTool " + myVersion) width:544 height:
 		
 		sld_head.value = val
 		$pt_head.scale = [val,val,val]
+
+		getBipTransform()
 	)
 	on btn_body pressed do
 	(
