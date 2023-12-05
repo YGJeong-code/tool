@@ -1,7 +1,7 @@
 /*
 Customizing Tool
 since 2019.10.10
-last updated 2023.12.04
+last updated 2023.12.05
 by YeonGyun,Jeong
 lupinxyz@gmail.com
 */
@@ -28,9 +28,13 @@ struct bipScale
 	LCalfEdit=[1,1,1],
 	LFoot=[1,1,1],
 	myThighDis=0,
+	myThighDisEdit=0,
 	myCalfDis=0,
+	myCalfDisEdit=0,
 	myCom=0,
-	myComEdit=0
+	myComEdit=0,
+	myThighComEdit=0,
+	myCalfComEdit=0
 )
 myLimit = limitStruct()
 myScale = bipScale()
@@ -119,6 +123,27 @@ rollout YG_customizingTool ("YG_customizingTool " + myVersion) width:544 height:
 
 	fn getBipTransform =
 	(
+		myScale.LThighEdit = biped.getTransform (execute("$"+edt_name.text+"LThigh")) #scale
+		myScale.LCalfEdit = biped.getTransform (execute("$"+edt_name.text+"LCalf")) #scale
+
+		myScale.myThighDisEdit = execute("$"+edt_name.text+"LThigh.transform.pos[3]") - execute("$"+edt_name.text+"LCalf.transform.pos[3]")
+		myScale.myCalfDisEdit = execute("$"+edt_name.text+"LCalf.transform.pos[3]") - execute("$"+edt_name.text+"LFoot.transform.pos[3]")
+
+		myBip = execute("$"+edt_name.text)
+		myScale.myComEdit = biped.getTransform myBip #pos
+
+		myScale.myThighComEdit = biped.getTransform myBip #pos
+		myScale.myCalfComEdit = biped.getTransform myBip #pos
+	)
+
+	on YG_customizingTool open do
+	(
+		gc()
+		clearListener()
+
+		uiEnabled(False)
+		edt_name.text = "Bip001"
+		
 		myScale = bipScale()
 			
 		myScale.LClavicle = biped.getTransform (execute("$"+edt_name.text+"LClavicle")) #scale
@@ -141,25 +166,16 @@ rollout YG_customizingTool ("YG_customizingTool " + myVersion) width:544 height:
 		myScale.LFinger41 = biped.getTransform (execute("$"+edt_name.text+"LFinger41")) #scale
 		myScale.LFinger42 = biped.getTransform (execute("$"+edt_name.text+"LFinger42")) #scale
 		myScale.LThigh = biped.getTransform (execute("$"+edt_name.text+"LThigh")) #scale
-		myScale.LThighEdit = biped.getTransform (execute("$"+edt_name.text+"LThigh")) #scale
+		-- myScale.LThighEdit = biped.getTransform (execute("$"+edt_name.text+"LThigh")) #scale
 		myScale.LCalf = biped.getTransform (execute("$"+edt_name.text+"LCalf")) #scale
-		myScale.LCalfEdit = biped.getTransform (execute("$"+edt_name.text+"LCalf")) #scale
+		-- myScale.LCalfEdit = biped.getTransform (execute("$"+edt_name.text+"LCalf")) #scale
 		myScale.LFoot = biped.getTransform (execute("$"+edt_name.text+"LFoot")) #scale
 		myScale.myThighDis = execute("$"+edt_name.text+"LThigh.transform.pos[3]") - execute("$"+edt_name.text+"LCalf.transform.pos[3]")
 		myScale.myCalfDis = execute("$"+edt_name.text+"LCalf.transform.pos[3]") - execute("$"+edt_name.text+"LFoot.transform.pos[3]")
 		myBip = execute("$"+edt_name.text)
 		myScale.myCom = biped.getTransform myBip #pos
-		myScale.myComEdit = biped.getTransform myBip #pos
-	)
+		-- myScale.myComEdit = biped.getTransform myBip #pos
 
-	on YG_customizingTool open do
-	(
-		gc()
-		clearListener()
-
-		uiEnabled(False)
-		edt_name.text = "Bip001"
-	
 		getBipTransform()
 	)
 	on btn_on pressed do
@@ -481,10 +497,6 @@ rollout YG_customizingTool ("YG_customizingTool " + myVersion) width:544 height:
 		(
 			myBip = execute("$"+edt_name.text+i)
 			biped.setTransform myBip #scale [myScale.LThighEdit[1]*val, myScale.LThighEdit[2], myScale.LThighEdit[3]] false
-
-			print (myScale.LThighEdit[1])
-			print (myScale.LThighEdit[2])
-			print (myScale.LThighEdit[3])
 		)
 	
 		myThigh = execute("$"+edt_name.text+"LThigh")
@@ -497,13 +509,27 @@ rollout YG_customizingTool ("YG_customizingTool " + myVersion) width:544 height:
 	
 		myBip = execute("$"+edt_name.text)
 		myTrans = biped.getTransform myBip #pos
-		myDist = myScale.myCom[3] + myDis - myScale.myThighDis
+
+		myDist = myScale.myComEdit[3] + myDis - myScale.myThighDisEdit
+
+		print("comEdit")
+		print(myScale.myComEdit)
+		print("calfComEdit")
+		print(myScale.myCalfComEdit)
+
+		if myScale.myComEdit != myScale.myCalfComEdit then
+		(
+			myDist = myScale.myCalfComEdit[3] + myDis - myScale.myThighDisEdit
+		)
+
 		biped.setTransform myBip #pos [myTrans[1], myTrans[2], myDist] false
 		
 		val = sld_thigh.value
 		myLen = sld_thighLength.value
 		$pt_thigh_l.scale = [myLen,val,val]
 		$pt_thigh_r.scale = [myLen,val,val]
+
+		myScale.myThighComEdit = biped.getTransform myBip #pos
 	)
 	on btn_thighLength pressed do
 	(
@@ -517,6 +543,10 @@ rollout YG_customizingTool ("YG_customizingTool " + myVersion) width:544 height:
 	
 		myBip = execute("$"+edt_name.text)
 		myTrans = myScale.myComEdit
+		-- if myScale.myComEdit != myScale.myCalfComEdit then
+		-- (
+		-- 	myTrans = myScale.myCalfComEdit
+		-- )
 		biped.setTransform myBip #pos [myTrans[1], myTrans[2], myTrans[3]] false
 		
 		val = sld_thigh.value
@@ -556,13 +586,21 @@ rollout YG_customizingTool ("YG_customizingTool " + myVersion) width:544 height:
 	
 		myBip = execute("$"+edt_name.text)
 		myTrans = biped.getTransform myBip #pos
-		myDist = myScale.myCom[3]+myDis-myScale.myCalfDis
+
+		myDist = myScale.myComEdit[3] + myDis - myScale.myCalfDisEdit
+		if myScale.myComEdit != myScale.myThighComEdit then
+		(
+			myDist = myScale.myThighComEdit[3] + myDis - myScale.myCalfDisEdit
+		)
+
 		biped.setTransform myBip #pos [myTrans[1], myTrans[2], myDist] false
 		
 		val = sld_calf.value
 		myLen = sld_calfLength.value
 		$pt_calf_l.scale = [myLen,val,val]
 		$pt_calf_r.scale = [myLen,val,val]
+
+		myScale.myCalfComEdit = biped.getTransform myBip #pos
 	)
 	on btn_calfLength pressed do
 	(
@@ -576,6 +614,10 @@ rollout YG_customizingTool ("YG_customizingTool " + myVersion) width:544 height:
 	
 		myBip = execute("$"+edt_name.text)
 		myTrans = myScale.myComEdit
+		-- if myScale.myComEdit != myScale.myThighComEdit then
+		-- (
+		-- 	myTrans = myScale.myThighComEdit
+		-- )
 		biped.setTransform myBip #pos [myTrans[1], myTrans[2], myTrans[3]] false
 		
 		val = sld_calf.value
@@ -715,6 +757,8 @@ rollout YG_customizingTool ("YG_customizingTool " + myVersion) width:544 height:
 		$pt_head.scale = [val,val,val]
 
 		getBipTransform()
+
+		-- print(myScale.myComEdit)
 	)
 	on btn_body pressed do
 	(
@@ -833,6 +877,10 @@ rollout YG_customizingTool ("YG_customizingTool " + myVersion) width:544 height:
 		
 		val = sld_head.value = 1
 		$pt_head.scale = [val,val,val]
+
+		getBipTransform()
+
+		print(myScale.myCom)
 	)
 )
 createdialog YG_customizingTool
