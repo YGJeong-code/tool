@@ -90,6 +90,10 @@ rollout YG_fileTool "YG_fileTool v1.0" width:528 height:320
 		(
 			mylist_category_4 = #("Public", "Normal", "Elite", "FieldBoss", "NamedBoss", "TribeBoss")
 		)
+		if list_category_3.selected == "Face" then
+		(
+			mylist_category_4 = #("", "Hair")
+		)
 		list_category_4.items = mylist_category_4
 		if list_category_3.selected == "Armor" then
 		(
@@ -182,6 +186,15 @@ rollout YG_fileTool "YG_fileTool v1.0" width:528 height:320
 			)
 		)
 		if list_category_3.selected == "Armor" then
+		(
+			myFile = myPrefix + list_category_2.selected + "_" + list_category_4.selected + list_category_5.selected + mySubfix
+
+			if list_category_4.selected == "" then
+			(
+				myFile = myPrefix + list_category_2.selected + "_" + list_category_3.selected + list_category_5.selected + mySubfix
+			)
+		)
+		if list_category_3.selected == "Face" then
 		(
 			myFile = myPrefix + list_category_2.selected + "_" + list_category_4.selected + list_category_5.selected + mySubfix
 
