@@ -1,7 +1,7 @@
 /*
 YG_rigTool
 since 2023.10.24
-last updated 2023.11.24
+last updated 2023.12.06
 by YeonGyun,Jeong
 lupinxyz@gmail.com
 */
@@ -390,7 +390,6 @@ myBoneStruct = boneStruct()
 myBonePTStruct = bonePTStruct()
 myRigStruct = rigStruct()
 
-myLayerList = #("bip","bip+","bone","bone+","con","socket","geo")
 myTopLayerList = #("PCM_BaseBody","PCF_BaseBody","Weapon","Monster")
 
 myName = "Bip001"
@@ -1442,7 +1441,8 @@ rollout YG_rigTool "YG_rigTool v1.0" width:160 height:368
 		)
 
 		--
-		-- myLayerList = #("bip","bip+","bone","bone+","con","geo")
+		myLayerList = #("bip","bip+","bone","bone_export","bone_export_ani","bone+","con","socket","geo","cut")
+
 
 		for i in myLayerList do
 		(
@@ -1463,6 +1463,19 @@ rollout YG_rigTool "YG_rigTool v1.0" width:160 height:368
 					myLayer.addnode i
 				)
 				clearSelection()
+			)
+
+			if i == "cut" then
+			(
+				try
+				(
+					select $*_cut
+					for i in selection do
+					(
+						myLayer.addnode i
+					)
+					clearSelection()
+				)catch()
 			)
 
 			if i == "bip" then
@@ -1509,6 +1522,38 @@ rollout YG_rigTool "YG_rigTool v1.0" width:160 height:368
 				)
 			)
 
+			if i == "bone_export_ani" then
+			(
+				myList = #($root, $pelvis, $spine_01, $spine_02, $spine_03, $spine_04, $spine_05, $neck_01, $neck_02, $head,
+
+					$clavicle_l, $upperarm_l, $lowerarm_l, $hand_l,
+					$index_metacarpal_l, $index_01_l, $index_02_l, $index_03_l,
+					$middle_metacarpal_l, $middle_01_l, $middle_02_l, $middle_03_l,
+					$pinky_metacarpal_l, $pinky_01_l, $pinky_02_l, $pinky_03_l,
+					$ring_metacarpal_l, $ring_01_l, $ring_02_l, $ring_03_l,
+					$thumb_01_l, $thumb_02_l, $thumb_03_l,
+
+					$clavicle_r, $upperarm_r, $lowerarm_r, $hand_r,
+					$index_metacarpal_r, $index_01_r, $index_02_r, $index_03_r,
+					$middle_metacarpal_r, $middle_01_r, $middle_02_r, $middle_03_r,
+					$pinky_metacarpal_r, $pinky_01_r, $pinky_02_r, $pinky_03_r,
+					$ring_metacarpal_r, $ring_01_r, $ring_02_r, $ring_03_r,
+					$thumb_01_r, $thumb_02_r, $thumb_03_r,
+
+					$thigh_l, $calf_l, $foot_l, $ball_l,
+					$thigh_r, $calf_r, $foot_r, $ball_r,
+
+					$weapon_l, $weapon_r, $weapon_back_l, $weapon_back_r, $weapon_waist_l, $weapon_waist_r
+				)
+
+				select myList
+				for i in selection do
+				(
+					myLayer.addnode i
+				)
+				clearSelection()
+			)
+
 			if i == "bone+" then
 			(
 				select $pt_*
@@ -1548,29 +1593,46 @@ rollout YG_rigTool "YG_rigTool v1.0" width:160 height:368
 
 		)
 
+		-- get layer
 		myTopLayer = LayerManager.getLayerFromName layer_name.selected
 		myBipLayer = LayerManager.getLayerFromName "bip"
 		myBipPlusLayer = LayerManager.getLayerFromName "bip+"
+		
 		myBoneLayer = LayerManager.getLayerFromName "bone"
+		-- myBoneExportLayer = LayerManager.getLayerFromName "bone_export"
+		myBoneExportAniLayer = LayerManager.getLayerFromName "bone_export_ani"
+
 		myBonePlusLayer = LayerManager.getLayerFromName "bone+"
 		myConLayer = LayerManager.getLayerFromName "con"
 		mySocketLayer = LayerManager.getLayerFromName "socket"
-		myGeoLayer = LayerManager.getLayerFromName "geo"
 
+		myGeoLayer = LayerManager.getLayerFromName "geo"
+		myCutLayer = LayerManager.getLayerFromName "cut"
+
+		-- set parent
 		myBipLayer.setParent myTopLayer
 		myBipPlusLayer.setParent myTopLayer
+
 		myBoneLayer.setParent myTopLayer
+		-- myBoneExportLayer.setParent myBoneLayer
+		myBoneExportAniLayer.setParent myBoneLayer
+
 		myBonePlusLayer.setParent myTopLayer
 		myConLayer.setParent myTopLayer
 		mySocketLayer.setParent myTopLayer
-		myGeoLayer.setParent myTopLayer
 
+		myGeoLayer.setParent myTopLayer
+		myCutLayer.setParent myGeoLayer
+
+		-- set layer property
+		myBipLayer.boxmode = true
 		myBipPlusLayer.on = false
 		myBoneLayer.on = false
 		myBonePlusLayer.on = false
+		myConLayer.on = false
 
 		-- remove empty layers
-		macros.run "Scene Explorer" "SERemoveEmptyLayers"
+		-- macros.run "Scene Explorer" "SERemoveEmptyLayers"
 	)
 
 --------------------------------------------------------------------------------------------------------
