@@ -37,7 +37,6 @@ struct bipStruct
 	myToe3R,myToe31R,
 	myToe4R,myToe41R,
 	myTail,myTail1,myTail2,myTail3,myTail4,myTail5,myTail6,myTail7,myTail8,
-	myProp,
 	
 	myAllList = #(myBip,myPelvis,mySpine,mySpine1,mySpine2,mySpine3,myNeck,myHead,
 		myClavicleL,myUpperArmL,myForearmL,myHandL,
@@ -64,8 +63,7 @@ struct bipStruct
 		myToe2R,myToe21R,
 		myToe3R,myToe31R,
 		myToe4R,myToe41R,
-		myTail,myTail1,myTail2,myTail3,myTail4,myTail5,myTail6,myTail7,myTail8,
-		myProp)
+		myTail,myTail1,myTail2,myTail3,myTail4,myTail5,myTail6,myTail7,myTail8)
 )
 
 struct boneStruct
@@ -135,7 +133,7 @@ struct boneStruct
 	myForearmR = execute ("$"+ myName + "lowerarm_r"),
 	myHandR = execute ("$"+ myName + "hand_r"),
 
-	myProp = execute ("$"+ myName + "weapon_r"),
+	-- myProp = execute ("$"+ myName + "weapon_r"),
 
 	myFinger0R = execute ("$"+ myName + "thumb_01_r"),
 	myFinger01R = execute ("$"+ myName + "thumb_02_r"),
@@ -212,8 +210,7 @@ struct boneStruct
 		myToe2R,myToe21R,
 		myToe3R,myToe31R,
 		myToe4R,myToe41R,
-		myTail,myTail1,myTail2,myTail3,myTail4,myTail5,myTail6,myTail7,myTail8,
-		myProp),
+		myTail,myTail1,myTail2,myTail3,myTail4,myTail5,myTail6,myTail7,myTail8),
 
 	myScaleList = #(myPelvis,mySpine1,mySpine2,mySpine3,mySpine4,myNeck,myHead,
 		myClavicleL,myUpperArmL,myForearmL,myHandL,
@@ -290,7 +287,7 @@ struct bonePTStruct
 	myForearmR = execute ("$"+ myName + "lowerarm_r"),
 	myHandR = execute ("$"+ myName + "hand_r"),
 
-	myProp = execute ("$"+ myName + "weapon_r"),
+	-- myProp = execute ("$"+ myName + "weapon_r"),
 
 	myFinger0R = execute ("$"+ myName + "thumb_01_r"),
 	myFinger01R = execute ("$"+ myName + "thumb_02_r"),
@@ -367,8 +364,7 @@ struct bonePTStruct
 		myToe2R,myToe21R,
 		myToe3R,myToe31R,
 		myToe4R,myToe41R,
-		myTail,myTail1,myTail2,myTail3,myTail4,myTail5,myTail6,myTail7,myTail8,
-		myProp),
+		myTail,myTail1,myTail2,myTail3,myTail4,myTail5,myTail6,myTail7,myTail8),
 
 	myScaleList = #(myPelvis,mySpine1,mySpine2,mySpine3,mySpine4,myNeck,myHead,
 		myClavicleL,myUpperArmL,myForearmL,myHandL,
@@ -485,7 +481,7 @@ rollout YG_rigTool "YG_rigTool v1.0" width:160 height:368
 		myForearmR = execute ("$"+ myName + "RForearm")
 		myHandR = execute ("$"+ myName + "RHand")
 
-		myProp = execute ("$"+ myName + "Prop1")
+		-- myProp = execute ("$"+ myName + "Prop1")
 
 		myFinger0R = execute ("$"+ myName + "RFinger0")
 		myFinger01R = execute ("$"+ myName + "RFinger01")
@@ -562,8 +558,7 @@ rollout YG_rigTool "YG_rigTool v1.0" width:160 height:368
 		myToe2R,myToe21R,
 		myToe3R,myToe31R,
 		myToe4R,myToe41R,
-		myTail,myTail1,myTail2,myTail3,myTail4,myTail5,myTail6,myTail7,myTail8,
-		myProp)
+		myTail,myTail1,myTail2,myTail3,myTail4,myTail5,myTail6,myTail7,myTail8)
 		
 		for i=1 to myAllList.count do
 		(
@@ -655,7 +650,7 @@ rollout YG_rigTool "YG_rigTool v1.0" width:160 height:368
 		myBipStruct.myTail6 = myTail6
 		myBipStruct.myTail7 = myTail7
 		myBipStruct.myTail8 = myTail8
-		myBipStruct.myProp = myProp
+		-- myBipStruct.myProp = myProp
 	)
 	
 --------------------------------------------------------------------------------------------------------
@@ -1413,7 +1408,25 @@ rollout YG_rigTool "YG_rigTool v1.0" width:160 height:368
 		for i in myRigStruct.myBoneList do
 		(
 			try(i.boneEnable=false)catch()
-		)		
+		)
+
+		-- weapon socket
+		if $weapon_l != undefined then
+		(
+			$weapon_l.parent = $hand_l
+			$weapon_r.parent = $hand_r
+			$weapon_back_l.parent = $spine_04
+			$weapon_back_r.parent = $spine_04
+			$weapon_waist_l.parent = $pelvis
+			$weapon_waist_r.parent = $pelvis
+		)
+
+		sliderTime = 0f
+		$con_weapon_l.transform.controller.AddTarget myBipStruct.myHandL 0
+		$con_weapon_r.transform.controller.AddTarget myBipStruct.myHandR 0
+
+		$con_weapon_l.parent = myBipStruct.myBip
+		$con_weapon_r.parent = myBipStruct.myBip
 	)
 
 --------------------------------------------------------------------------------------------------------
@@ -1441,7 +1454,7 @@ rollout YG_rigTool "YG_rigTool v1.0" width:160 height:368
 		)
 
 		--
-		myLayerList = #("bip","bip+","bone","bone_export","bone_export_ani","bone+","con","socket","geo","cut")
+		myLayerList = #("bip","bip+","bone","bone_export_ani","bone+","con","socket","geo","cut")
 
 
 		for i in myLayerList do
@@ -1452,7 +1465,7 @@ rollout YG_rigTool "YG_rigTool v1.0" width:160 height:368
 				myLayer = LayerManager.newLayer()
 				myLayer.setName i
 			)
-
+			/*
 			if i == "geo" then
 			(
 				select geometry
@@ -1464,7 +1477,7 @@ rollout YG_rigTool "YG_rigTool v1.0" width:160 height:368
 				)
 				clearSelection()
 			)
-
+			*/
 			if i == "cut" then
 			(
 				try
@@ -1546,12 +1559,15 @@ rollout YG_rigTool "YG_rigTool v1.0" width:160 height:368
 					$weapon_l, $weapon_r, $weapon_back_l, $weapon_back_r, $weapon_waist_l, $weapon_waist_r
 				)
 
-				select myList
-				for i in selection do
+				try
 				(
-					myLayer.addnode i
-				)
-				clearSelection()
+					select myList
+					for i in selection do
+					(
+						myLayer.addnode i
+					)
+					clearSelection()
+				)catch()
 			)
 
 			if i == "bone+" then
