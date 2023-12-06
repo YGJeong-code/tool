@@ -1,7 +1,7 @@
 /*
 YG_namingTool
 since 2023.10.24
-last updated 2023.11.24
+last updated 2023.11.30
 by YeonGyun,Jeong
 lupinxyz@gmail.com
 */
@@ -89,8 +89,8 @@ rollout YG_namingTool ("YG_namingTool " + myVersion) width:432 height:344
 	fn categoryAdd =
 	(
 		myChaList = #("", "Fiona", "Lethita")
-		myPartsList = #("", "hair", "tail")
-		myLayerList = #("", "upper", "lower", "left", "right", "a", "b", "c", "d")
+		myPartsList = #("", "hair", "tail", "fur")
+		myLayerList = #("", "upper", "lower", "left", "right", "center", "a", "b", "c", "d")
 		myCountList = #("", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10")
 
 		ddl_cha.items = myChaList
@@ -150,19 +150,39 @@ rollout YG_namingTool ("YG_namingTool " + myVersion) width:432 height:344
 
 	on btn_editName pressed do
 	(		
-		mySel = $
+		mySel = selection as array
 		
-		for i=1 to mySel.count do
+		if mySel.count > 1 then
 		(
-			myCount = formattedPrint i format:"02d"
-			myNameAddCount = ( myName + "_" + myCount )
+			for i=1 to mySel.count do
+			(
+				myCount = formattedPrint i format:"02d"
+				myNameAddCount = ( edt_text_name.text + "_" + myCount )
 
+				if ddl_side.selected != "" then
+				(
+					myNameSide = myNameAddCount + "_" + ddl_side.selected
+
+					mySel[i].name = myNameSide
+				)
+				else
+				(
+					mySel[i].name = myNameAddCount
+				)		
+			)
+		)
+		else
+		(
 			if ddl_side.selected != "" then
 			(
-				myName = myName + "_" + ddl_side.selected
-			)
+				myNameSide = myName + "_" + ddl_side.selected
 
-			mySel[i].name = myNameAddCount
+				mySel[1].name = myNameSide
+			)
+			else
+			(
+				mySel[1].name = myName
+			)	
 		)
 	)
 )
