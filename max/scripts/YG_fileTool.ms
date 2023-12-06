@@ -1,7 +1,7 @@
 /*
 YG_fileTool
 since 2023.11.10
-last updated 2023.11.24
+last updated 2023.12.04
 by YeonGyun,Jeong
 lupinxyz@gmail.com
 */
@@ -78,6 +78,10 @@ rollout YG_fileTool "YG_fileTool v1.0" width:528 height:320
 		(
 			mylist_category_3 = #("Public", "Type", "")
 		)
+		if list_category_2.selected == "BaseBody_PCF" or list_category_2.selected == "BaseBody_PCM" then
+		(
+			mylist_category_3 = #("", "Face", "Foot", "Hand", "Lower", "Upper")
+		)
 		list_category_3.items = mylist_category_3
 
 		--category4
@@ -85,6 +89,11 @@ rollout YG_fileTool "YG_fileTool v1.0" width:528 height:320
 		if list_category_3.selected == "Type" then
 		(
 			mylist_category_4 = #("Public", "Normal", "Elite", "FieldBoss", "NamedBoss", "TribeBoss")
+		)
+		list_category_4.items = mylist_category_4
+		if list_category_3.selected == "Armor" then
+		(
+			mylist_category_4 = #("", "Foot", "Hand", "Head", "Lower", "Upper")
 		)
 		list_category_4.items = mylist_category_4
 		
@@ -132,6 +141,12 @@ rollout YG_fileTool "YG_fileTool v1.0" width:528 height:320
 
 				myFolder = myMainFolder + list_category_2.selected + "\\" + temp3 + "\\" + temp4 + "\Model"
 			)
+
+			if list_category_2.selected == "BaseBody_PCF" or list_category_2.selected == "BaseBody_PCM" then
+			(
+				myFolder = myMainFolder + list_category_2.selected + "\Model"
+			)
+
 			myFile = myPrefix + list_category_2.selected + "_" + list_category_3.selected + list_category_5.selected + mySubfix
 		)
 		if list_category_2.selected == "PC_Hair" then
@@ -141,10 +156,20 @@ rollout YG_fileTool "YG_fileTool v1.0" width:528 height:320
 		if list_category_2.selected == "BaseBody_PCF" then
 		(
 			myFile = myPrefix + "PCF_BaseBody" + list_category_5.selected + mySubfix
+
+			if list_category_3.selected != "" then
+			(
+				myFile = myPrefix + "PCF_" + list_category_3.selected + list_category_5.selected + mySubfix
+			)
 		)
 		if list_category_2.selected == "BaseBody_PCM" then
 		(
 			myFile = myPrefix + "PCM_BaseBody" + list_category_5.selected + mySubfix
+
+			if list_category_3.selected != "" then
+			(
+				myFile = myPrefix + "PCM_" + list_category_3.selected + list_category_5.selected + mySubfix
+			)
 		)
 		if list_category_3.selected == "Type" then
 		(
@@ -154,6 +179,15 @@ rollout YG_fileTool "YG_fileTool v1.0" width:528 height:320
 			(
 				spn5 = formattedPrint YG_fileTool.spn_category5.value format:"02d"
 				myFile = myPrefix + list_category_2.selected + "_" + list_category_3.selected + spn_category3.value as string + "_" + list_category_4.selected + spn4 + "_" + list_category_5.selected + spn5 + mySubfix
+			)
+		)
+		if list_category_3.selected == "Armor" then
+		(
+			myFile = myPrefix + list_category_2.selected + "_" + list_category_4.selected + list_category_5.selected + mySubfix
+
+			if list_category_4.selected == "" then
+			(
+				myFile = myPrefix + list_category_2.selected + "_" + list_category_3.selected + list_category_5.selected + mySubfix
 			)
 		)
 		
