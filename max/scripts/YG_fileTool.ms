@@ -21,9 +21,9 @@ rollout YG_fileTool "YG_fileTool v1.0" width:528 height:320
 	listbox 'list_category_4' "Category4" pos:[320,8] width:96 height:10 align:#left
 	listbox 'list_category_5' "Category5" pos:[424,8] width:96 height:10 align:#left
 	
-	spinner 'spn_category3' "" pos:[216,168] width:96 height:16 range:[1,99,1] type:#integer scale:1 align:#left
-	spinner 'spn_category4' "" pos:[320,168] width:96 height:16 range:[1,99,1] type:#integer scale:1 align:#left
-	spinner 'spn_category5' "" pos:[424,168] width:96 height:16 range:[1,99,1] type:#integer scale:1 align:#left
+	spinner 'spn_category3' "" pos:[216,168] width:96 height:16 range:[1,999,1] type:#integer scale:1 align:#left
+	spinner 'spn_category4' "" pos:[320,168] width:96 height:16 range:[1,999,1] type:#integer scale:1 align:#left
+	spinner 'spn_category5' "" pos:[424,168] width:96 height:16 range:[1,999,1] type:#integer scale:1 align:#left
 	
 	edittext 'text_FolderPath' "Folder" pos:[8,192] width:512 height:24 align:#left
 
@@ -41,7 +41,7 @@ rollout YG_fileTool "YG_fileTool v1.0" width:528 height:320
 	fn selectCategory=
 	(
 		--category1
-		mylist_category_1 = #("PC", "Monster")
+		mylist_category_1 = #("PC", "Outfit", "Monster")
 		-- mylist_category_1 = #("PC", "NPC", "Monster")
 		list_category_1.items = mylist_category_1
 		
@@ -50,6 +50,11 @@ rollout YG_fileTool "YG_fileTool v1.0" width:528 height:320
 		(
 			mylist_category_2 = #("BaseBody_PCF", "BaseBody_PCM", "PC_Hair", "Fiona", "Lethita", "", "", "", "")
 			myMainFolder = "Z:\VindictusGFX\Content\VindictusRoot\Character\Player\\"
+		)
+		if list_category_1.selected == "Outfit" then
+		(
+			mylist_category_2 = #("PCF_Outfit", "PCM_Outfit", "", "", "", "", "", "", "")
+			myMainFolder = "Z:\VindictusGFX\Content\VindictusRoot\Character\Outfit\\"
 		)
 		-- if list_category_1.selected == "NPC" then
 		-- (
@@ -111,6 +116,10 @@ rollout YG_fileTool "YG_fileTool v1.0" width:528 height:320
 		(
 			mylist_category_5 = #("", "Weapon", "", "", "", "", "", "", "", "")
 		)
+		if list_category_1.selected == "Outfit" then
+		(
+			mylist_category_5 = #("", "Foot", "Hand", "Head", "Lower", "Upper")
+		)
 		list_category_5.items = mylist_category_5
 		
 		--folder path & file naming
@@ -152,6 +161,21 @@ rollout YG_fileTool "YG_fileTool v1.0" width:528 height:320
 			)
 
 			myFile = myPrefix + list_category_2.selected + "_" + list_category_3.selected + list_category_5.selected + mySubfix
+		)
+		if list_category_1.selected == "Outfit" then
+		(
+			spn3 = formattedPrint YG_fileTool.spn_category3.value format:"03d"
+			-- spn4 = formattedPrint YG_fileTool.spn_category4.value format:"03d"
+
+			if list_category_2.selected == "PCF_Outfit" then
+			(
+				myFolder = myMainFolder + list_category_2.selected + "\PCF_" + spn3 + "\Model"
+			)
+			else
+			(
+				myFolder = myMainFolder + list_category_2.selected + "\PCM_" + spn3 + "\Model"
+			)
+			
 		)
 		if list_category_2.selected == "PC_Hair" then
 		(
@@ -201,6 +225,25 @@ rollout YG_fileTool "YG_fileTool v1.0" width:528 height:320
 			if list_category_4.selected == "" then
 			(
 				myFile = myPrefix + list_category_2.selected + "_" + list_category_3.selected + list_category_5.selected + mySubfix
+			)
+		)
+		if list_category_1.selected == "Outfit" then
+		(
+			spn3 = formattedPrint YG_fileTool.spn_category3.value format:"03d"
+			-- spn4 = formattedPrint YG_fileTool.spn_category4.value format:"03d"
+
+			myGender = "PCF"
+			if list_category_2.selected == "PCM_Outfit" then
+			(
+				myGender = "PCM"
+			)
+
+			myFile = myPrefix + myGender + "_" + spn3 + "_" + list_category_4.selected  + mySubfix
+			
+			if list_category_5.selected != "" then
+			(
+				spn5 = formattedPrint YG_fileTool.spn_category5.value format:"02d"
+				myFile = myPrefix + myGender + "_" + spn3 + "_" + list_category_5.selected + spn5 + mySubfix
 			)
 		)
 		
