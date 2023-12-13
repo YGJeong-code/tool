@@ -238,7 +238,7 @@ rollout YG_fileTool "YG_fileTool v1.0" width:528 height:320
 				myGender = "PCM"
 			)
 
-			myFile = myPrefix + myGender + "_" + spn3 + "_" + list_category_4.selected  + mySubfix
+			myFile = myPrefix + myGender + "_" + spn3 + mySubfix
 			
 			if list_category_5.selected != "" then
 			(
