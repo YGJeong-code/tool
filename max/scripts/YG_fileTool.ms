@@ -118,7 +118,7 @@ rollout YG_fileTool "YG_fileTool v1.0" width:528 height:320
 		)
 		if list_category_1.selected == "Outfit" then
 		(
-			mylist_category_5 = #("", "Foot", "Hand", "Head", "Lower", "Upper")
+			mylist_category_5 = #("", "Foot", "Hand", "Head", "Lower", "Upper", "Onepiece")
 		)
 		list_category_5.items = mylist_category_5
 		
