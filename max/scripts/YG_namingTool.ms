@@ -89,7 +89,7 @@ rollout YG_namingTool ("YG_namingTool " + myVersion) width:432 height:344
 	fn categoryAdd =
 	(
 		myChaList = #("", "Fiona", "Lethita")
-		myPartsList = #("", "root", "hair", "tail", "fur", "armor", "head", "upper", "lower", "hand", "foot", "ponytail", "feather", "shoulder")
+		myPartsList = #("", "root", "hair", "tail", "fur", "armor", "head", "upper", "lower", "hand", "foot", "ponytail", "feather", "shoulder", "skirt")
 		myLayerList = #("", "upper", "lower", "left", "right", "center", "fwd", "bck", "in", "out", "a", "b", "c", "d")
 		myCountList = #("", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10")
 
