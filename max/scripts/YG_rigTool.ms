@@ -1,7 +1,7 @@
 /*
 YG_rigTool
 since 2023.10.24
-last updated 2023.12.06
+last updated 2023.12.15
 by YeonGyun,Jeong
 lupinxyz@gmail.com
 */
@@ -395,23 +395,24 @@ myVersion = "v1.0"
 	
 try( destroydialog YG_rigTool ) catch()
 
-rollout YG_rigTool "YG_rigTool v1.0" width:160 height:368
+rollout YG_rigTool "YG_rigTool v1.0" width:160 height:408
 (
-	GroupBox 'grp1' "Bone" pos:[8,8] width:144 height:120 align:#left
+	GroupBox 'grp1' "Bone" pos:[8,8] width:144 height:160 align:#left
 	spinner 'spn_boneSize' "Bone Size" pos:[16,24] width:67 height:16 range:[1,20,5] type:#integer scale:1 align:#left
 	button 'btn_makeRootBone' "Make Root Bone" pos:[16,48] width:128 height:32 align:#left
-	button 'btn_openBoneTools' "Open Bone Tools" pos:[16,88] width:128 height:32 align:#left
+	button 'btn_boneMirror' "Bone Mirror" pos:[16,88] width:128 height:32 align:#left
+	button 'btn_openBoneTools' "Open Bone Tools" pos:[16,128] width:128 height:32 align:#left
 	
-	GroupBox 'grp2' "Rig" pos:[8,128] width:144 height:88 align:#left
-	edittext 'bip_name' "Biped : " pos:[16,144] width:128 height:24 align:#left
-	button 'btn_boneConnectToBonePT' "Bone Connect To Biped" pos:[16,176] width:128 height:32 align:#left
+	GroupBox 'grp2' "Rig" pos:[8,168] width:144 height:88 align:#left
+	edittext 'bip_name' "Biped : " pos:[16,184] width:128 height:24 align:#left
+	button 'btn_boneConnectToBonePT' "Bone Connect To Biped" pos:[16,216] width:128 height:32 align:#left
 	
-	GroupBox 'grp3' "Layer" pos:[8,216] width:144 height:88 align:#left
-	dropdownList 'layer_name' "" pos:[16,232] width:128 height:22 align:#left
-	button 'btn_layerArrange' "Layer Arrange" pos:[16,264] width:128 height:32 align:#left
+	GroupBox 'grp3' "Layer" pos:[8,256] width:144 height:88 align:#left
+	dropdownList 'layer_name' "" pos:[16,272] width:128 height:22 align:#left
+	button 'btn_layerArrange' "Layer Arrange" pos:[16,304] width:128 height:32 align:#left
 
-	groupBox 'grp6' "Tools" pos:[8,304] width:144 height:56 align:#left
-	button 'btn_namingTool' "Naming Tool" pos:[16,320] width:128 height:32 align:#left
+	GroupBox 'grp6' "Tools" pos:[8,344] width:144 height:56 align:#left
+	button 'btn_namingTool' "Naming Tool" pos:[16,360] width:128 height:32 align:#left
 --------------------------------------------------------------------------------------------------------
 --function------------------------------------------------------------------------------------------------
 --------------------------------------------------------------------------------------------------------
@@ -653,6 +654,20 @@ rollout YG_rigTool "YG_rigTool v1.0" width:160 height:368
 		-- myBipStruct.myProp = myProp
 	)
 	
+	--bone mirror copy function
+	fn boneMirrorCopy myBone=
+	(
+		myCopy = copy myBone
+		t = myCopy.transform
+		mt=t*(scaleMatrix [-1,1,1])
+		myCopy.transform = mt
+		mtm=(scaleMatrix [1,1,-1])*mt
+		myCopy.transform = mtm
+		myCopy.name = substituteString myBone.name "_l" "_r"
+		myCopy.wirecolor = color 174 186 203
+
+		return myCopy.name
+	)
 --------------------------------------------------------------------------------------------------------
 --controller-------------------------------------------------------------------------------------------------
 --------------------------------------------------------------------------------------------------------
@@ -1701,6 +1716,26 @@ rollout YG_rigTool "YG_rigTool v1.0" width:160 height:368
 	(
 		scripts = "Z:\\VindictusGFX\\Content\\tool\\max\\scripts\\YG_namingTool.ms"
 		executeScriptFile scripts
+	)
+	on btn_boneMirror pressed do
+	(
+		for i=1 to selection.count do
+		(
+			myMirror = boneMirrorCopy selection[i]
+
+			myMirrorBone = execute ("$"+ myMirror)
+
+			myParent = selection[i].parent
+
+			if i>1 do
+			(
+				myName = substituteString myParent.name "_l" "_r"
+
+				myBone = execute ("$"+ myName)
+
+				myMirrorBone.parent = myBone
+			)			
+		)
 	)
 )
 
