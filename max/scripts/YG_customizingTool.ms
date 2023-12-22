@@ -1,7 +1,7 @@
 /*
 Customizing Tool
 since 2019.10.10
-last updated 2023.12.05
+last updated 2023.12.22
 by YeonGyun,Jeong
 lupinxyz@gmail.com
 */
@@ -39,6 +39,7 @@ struct bipScale
 myLimit = limitStruct()
 myScale = bipScale()
 myVersion = "v1.0"
+myRange = [0.7, 1.3, 1]
 
 try( destroydialog YG_customizingTool ) catch()
 
@@ -52,58 +53,58 @@ rollout YG_customizingTool ("YG_customizingTool " + myVersion) width:544 height:
 	button 'btn_off' "OFF" pos:[488,8] width:48 height:24 align:#left
 
 	GroupBox 'grp_all' "All" pos:[8,40] width:176 height:72 align:#left
-	slider 'sld_body' "Body Volume" pos:[16,56] width:112 height:44 range:[0.8,1.2,1] align:#left
+	slider 'sld_body' "Body Volume" pos:[16,56] width:112 height:44 range:myRange align:#left
 	button 'btn_body' "Reset" pos:[125,64] width:48 height:32 align:#left
 	
 	GroupBox 'grp_torso' "Torso" pos:[8,120] width:176 height:360 align:#left
-	slider 'sld_head' "Head Volume" pos:[16,136] width:112 height:44 range:[0.8,1.2,1] align:#left
+	slider 'sld_head' "Head Volume" pos:[16,136] width:112 height:44 range:myRange align:#left
 	button 'btn_head' "Reset" pos:[128,144] width:48 height:32 Enable:false align:#left
-	slider 'sld_neck' "Neck Volume" pos:[16,184] width:112 height:44 range:[0.8,1.2,1] align:#left
+	slider 'sld_neck' "Neck Volume" pos:[16,184] width:112 height:44 range:myRange align:#left
 	button 'btn_neck' "Reset" pos:[128,192] width:48 height:32 align:#left
-	slider 'sld_breast' "Breast Volume" pos:[16,232] width:112 height:44 range:[0.8,1.2,1] align:#left
+	slider 'sld_breast' "Breast Volume" pos:[16,232] width:112 height:44 range:myRange align:#left
 	button 'btn_breast' "Reset" pos:[128,240] width:48 height:32 align:#left
-	slider 'sld_spine3' "Spine3 Volume" pos:[16,280] width:112 height:44 range:[0.8,1.2,1] align:#left
+	slider 'sld_spine3' "Spine3 Volume" pos:[16,280] width:112 height:44 range:myRange align:#left
 	button 'btn_spine3' "Reset" pos:[128,288] width:48 height:32 align:#left
-	slider 'sld_spine2' "Spine2 Volume" pos:[16,328] width:112 height:44 range:[0.8,1.2,1] align:#left
+	slider 'sld_spine2' "Spine2 Volume" pos:[16,328] width:112 height:44 range:myRange align:#left
 	button 'btn_spine2' "Reset" pos:[128,336] width:48 height:32 align:#left
-	slider 'sld_spine1' "Spine1 Volume" pos:[16,376] width:112 height:44 range:[0.8,1.2,1] align:#left
+	slider 'sld_spine1' "Spine1 Volume" pos:[16,376] width:112 height:44 range:myRange align:#left
 	button 'btn_spine1' "Reset" pos:[128,384] width:48 height:32 align:#left
-	slider 'sld_pelvis' "Pelvis Volume" pos:[16,424] width:112 height:44 range:[0.8,1.2,1] align:#left
+	slider 'sld_pelvis' "Pelvis Volume" pos:[16,424] width:112 height:44 range:myRange align:#left
 	button 'btn_pelvis' "Reset" pos:[128,432] width:48 height:32 align:#left
 
 	GroupBox 'grp_arm' "Arm" pos:[192,40] width:344 height:216 align:#left
-	slider 'sld_clavicle' "Clavicle Volume" pos:[200,56] width:112 height:44 range:[0.8,1.2,1] align:#left
+	slider 'sld_clavicle' "Clavicle Volume" pos:[200,56] width:112 height:44 range:myRange align:#left
 	button 'btn_clavicle' "Reset" pos:[309,64] width:48 height:32 align:#left
-	slider 'sld_clavicleLength' "Clavicle Length" pos:[368,56] width:112 height:44 range:[0.8,1.2,1] align:#left
+	slider 'sld_clavicleLength' "Clavicle Length" pos:[368,56] width:112 height:44 range:myRange align:#left
 	button 'btn_clavicleLength' "Reset" pos:[477,64] width:48 height:32 align:#left
 
-	slider 'sld_upperArm' "UpperArm Volume" pos:[200,104] width:112 height:44 range:[0.8,1.2,1] align:#left
+	slider 'sld_upperArm' "UpperArm Volume" pos:[200,104] width:112 height:44 range:myRange align:#left
 	button 'btn_upperArm' "Reset" pos:[309,112] width:48 height:32 align:#left
-	slider 'sld_upperArmLength' "UpperArm Length" pos:[368,104] width:112 height:44 range:[0.8,1.2,1] align:#left
+	slider 'sld_upperArmLength' "UpperArm Length" pos:[368,104] width:112 height:44 range:myRange align:#left
 	button 'btn_upperArmLength' "Reset" pos:[477,112] width:48 height:32 align:#left
 	
-	slider 'sld_foreArm' "ForeArm Volume" pos:[200,152] width:112 height:44 range:[0.8,1.2,1] align:#left
+	slider 'sld_foreArm' "ForeArm Volume" pos:[200,152] width:112 height:44 range:myRange align:#left
 	button 'btn_foreArm' "Reset" pos:[309,160] width:48 height:32 align:#left
-	slider 'sld_foreArmLength' "ForeArm Length" pos:[368,152] width:112 height:44 range:[0.8,1.2,1] align:#left
+	slider 'sld_foreArmLength' "ForeArm Length" pos:[368,152] width:112 height:44 range:myRange align:#left
 	button 'btn_foreArmLength' "Reset" pos:[477,160] width:48 height:32 align:#left
 
-	slider 'sld_hand' "Hand Volume" pos:[200,200] width:112 height:44 range:[0.8,1.2,1] align:#left
+	slider 'sld_hand' "Hand Volume" pos:[200,200] width:112 height:44 range:myRange align:#left
 	button 'btn_hand' "Reset" pos:[309,208] width:48 height:32 align:#left
 
 	GroupBox 'grpl_eg' "Leg" pos:[192,264] width:344 height:216 align:#left
-	slider 'sld_hip' "Hip Volume" pos:[200,280] width:112 height:44 range:[0.8,1.2,1] align:#left
+	slider 'sld_hip' "Hip Volume" pos:[200,280] width:112 height:44 range:myRange align:#left
 	button 'btn_hip' "Reset" pos:[309,288] width:48 height:32 align:#left
-	slider 'sld_thigh' "Thigh Volume" pos:[200,328] width:112 height:44 range:[0.8,1.2,1] align:#left
+	slider 'sld_thigh' "Thigh Volume" pos:[200,328] width:112 height:44 range:myRange align:#left
 	button 'btn_thigh' "Reset" pos:[309,336] width:48 height:32 align:#left
-	slider 'sld_thighLength' "Thigh Length" pos:[368,328] width:112 height:44 range:[0.8,1.2,1] align:#left
+	slider 'sld_thighLength' "Thigh Length" pos:[368,328] width:112 height:44 range:myRange align:#left
 	button 'btn_thighLength' "Reset" pos:[477,336] width:48 height:32 align:#left
 
-	slider 'sld_calf' "Calf Volume" pos:[200,376] width:112 height:44 range:[0.8,1.2,1] align:#left
+	slider 'sld_calf' "Calf Volume" pos:[200,376] width:112 height:44 range:myRange align:#left
 	button 'btn_calf' "Reset" pos:[309,384] width:48 height:32 align:#left
-	slider 'sld_calfLength' "Calf Length" pos:[368,376] width:112 height:44 range:[0.8,1.2,1] align:#left
+	slider 'sld_calfLength' "Calf Length" pos:[368,376] width:112 height:44 range:myRange align:#left
 	button 'btn_calfLength' "Reset" pos:[477,384] width:48 height:32 align:#left
 
-	slider 'sld_foot' "Foot Volume" pos:[200,424] width:112 height:44 range:[0.8,1.2,1] align:#left
+	slider 'sld_foot' "Foot Volume" pos:[200,424] width:112 height:44 range:myRange align:#left
 	button 'btn_foot' "Reset" pos:[309,432] width:48 height:32 align:#left
 	
 	
