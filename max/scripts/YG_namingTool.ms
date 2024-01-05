@@ -1,7 +1,7 @@
 /*
 YG_namingTool
 since 2023.10.24
-last updated 2023.11.30
+last updated 2024.01.05
 by YeonGyun,Jeong
 lupinxyz@gmail.com
 */
@@ -11,7 +11,7 @@ myName = ""
 
 try( destroydialog YG_namingTool ) catch()
 
-rollout YG_namingTool ("YG_namingTool " + myVersion) width:432 height:344
+rollout YG_namingTool "YG_namingTool v1.0" width:432 height:424
 (
 	
 	dropdownList 'ddl_cha' "Character" pos:[8,8] width:100 height:41 items:#("") align:#left
@@ -42,6 +42,10 @@ rollout YG_namingTool ("YG_namingTool " + myVersion) width:432 height:344
 	edittext 'edt_text_name' "" pos:[8,264] width:304 height:24 align:#left
 	dropdownList 'ddl_side' "Side" pos:[320,248] width:100 height:41 items:#("", "l", "r", "c") align:#left
 	button 'btn_editName' "Edit Name" pos:[8,296] width:416 height:40 align:#left
+
+	edittext 'edt_search' "Search" pos:[8,344] width:200 height:24 align:#left
+	edittext 'edt_replace' "Replace" pos:[224,344] width:200 height:24 align:#left
+	button 'btn_searchAndReplace' "Search & Replace" pos:[8,376] width:416 height:40 align:#left
 
 --------------------------------------------------------------------------------------------------------
 --function-------------------------------------------------------------------------------------------------
@@ -88,7 +92,7 @@ rollout YG_namingTool ("YG_namingTool " + myVersion) width:432 height:344
 
 	fn categoryAdd =
 	(
-		myChaList = #("", "Fiona", "Lethita")
+		myChaList = #("", "Outfit00", "Fiona", "Lethita")
 		myPartsList = #("", "root", "hair", "tail", "fur", "armor", "head", "upper", "lower", "hand", "foot", "ponytail", "feather", "shoulder", "skirt")
 		myLayerList = #("", "upper", "lower", "left", "right", "center", "fwd", "bck", "in", "out", "a", "b", "c", "d")
 		myCountList = #("", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10")
@@ -113,6 +117,17 @@ rollout YG_namingTool ("YG_namingTool " + myVersion) width:432 height:344
 		ddl_count5.items = myCountList
 	)
 
+	fn serchAndReplace myFrom myTo =
+	(
+		mySel = selection as array
+
+		for i in mySel do
+		(
+			temp = substituteString i.name myFrom myTo
+			i.name = temp
+		)
+	)
+
 --------------------------------------------------------------------------------------------------------
 --button-------------------------------------------------------------------------------------------------
 --------------------------------------------------------------------------------------------------------	
@@ -122,32 +137,46 @@ rollout YG_namingTool ("YG_namingTool " + myVersion) width:432 height:344
 		clearListener()
 		categoryAdd()
 	)
-
-	on ddl_cha selected sel do selectedExcute ddl_cha ddl_parts1 ddl_layer1 edt_text1
-	on ddl_parts1 selected sel do selectedExcute ddl_parts1 ddl_cha ddl_layer1 edt_text1
-	on ddl_layer1 selected sel do selectedExcute ddl_layer1 ddl_cha ddl_parts1 edt_text1
-	on edt_text1 changed txt do makeName()
-	
-	on ddl_parts2 selected sel do selectedExcute ddl_parts2 ddl_layer2 ddl_count2 edt_text2
-	on ddl_layer2 selected sel do selectedExcute ddl_layer2 ddl_parts2 ddl_count2 edt_text2
-	on ddl_count2 selected sel do selectedExcute ddl_count2 ddl_layer2 ddl_parts2 edt_text2
-	on edt_text2 changed txt do makeName()
-
-	on ddl_parts3 selected sel do selectedExcute ddl_parts3 ddl_layer3 ddl_count3 edt_text3
-	on ddl_layer3 selected sel do selectedExcute ddl_layer3 ddl_parts3 ddl_count3 edt_text3
-	on ddl_count3 selected sel do selectedExcute ddl_count3 ddl_layer3 ddl_parts3 edt_text3
-	on edt_text3 changed txt do makeName()
-
-	on ddl_parts4 selected sel do selectedExcute ddl_parts4 ddl_layer4 ddl_count4 edt_text4
-	on ddl_layer4 selected sel do selectedExcute ddl_layer4 ddl_parts4 ddl_count4 edt_text4
-	on ddl_count4 selected sel do selectedExcute ddl_count4 ddl_layer4 ddl_parts4 edt_text4
-	on edt_text4 changed txt do makeName()
-
-	on ddl_parts5 selected sel do selectedExcute ddl_parts5 ddl_layer5 ddl_count5 edt_text5
-	on ddl_layer5 selected sel do selectedExcute ddl_layer5 ddl_parts5 ddl_count5 edt_text5
-	on ddl_count5 selected sel do selectedExcute ddl_count5 ddl_layer5 ddl_parts5 edt_text5
-	on edt_text5 changed txt do makeName()
-
+	on ddl_cha selected sel do
+		selectedExcute ddl_cha ddl_parts1 ddl_layer1 edt_text1
+	on ddl_parts1 selected sel do
+		selectedExcute ddl_parts1 ddl_cha ddl_layer1 edt_text1
+	on ddl_layer1 selected sel do
+		selectedExcute ddl_layer1 ddl_cha ddl_parts1 edt_text1
+	on edt_text1 changed txt do
+		makeName()
+	on ddl_parts2 selected sel do
+		selectedExcute ddl_parts2 ddl_layer2 ddl_count2 edt_text2
+	on ddl_layer2 selected sel do
+		selectedExcute ddl_layer2 ddl_parts2 ddl_count2 edt_text2
+	on ddl_count2 selected sel do
+		selectedExcute ddl_count2 ddl_layer2 ddl_parts2 edt_text2
+	on edt_text2 changed txt do
+		makeName()
+	on ddl_parts3 selected sel do
+		selectedExcute ddl_parts3 ddl_layer3 ddl_count3 edt_text3
+	on ddl_layer3 selected sel do
+		selectedExcute ddl_layer3 ddl_parts3 ddl_count3 edt_text3
+	on ddl_count3 selected sel do
+		selectedExcute ddl_count3 ddl_layer3 ddl_parts3 edt_text3
+	on edt_text3 changed txt do
+		makeName()
+	on ddl_parts4 selected sel do
+		selectedExcute ddl_parts4 ddl_layer4 ddl_count4 edt_text4
+	on ddl_layer4 selected sel do
+		selectedExcute ddl_layer4 ddl_parts4 ddl_count4 edt_text4
+	on ddl_count4 selected sel do
+		selectedExcute ddl_count4 ddl_layer4 ddl_parts4 edt_text4
+	on edt_text4 changed txt do
+		makeName()
+	on ddl_parts5 selected sel do
+		selectedExcute ddl_parts5 ddl_layer5 ddl_count5 edt_text5
+	on ddl_layer5 selected sel do
+		selectedExcute ddl_layer5 ddl_parts5 ddl_count5 edt_text5
+	on ddl_count5 selected sel do
+		selectedExcute ddl_count5 ddl_layer5 ddl_parts5 edt_text5
+	on edt_text5 changed txt do
+		makeName()
 	on btn_editName pressed do
 	(		
 		mySel = selection as array
@@ -158,11 +187,11 @@ rollout YG_namingTool ("YG_namingTool " + myVersion) width:432 height:344
 			(
 				myCount = formattedPrint i format:"02d"
 				myNameAddCount = ( edt_text_name.text + "_" + myCount )
-
+	
 				if ddl_side.selected != "" then
 				(
 					myNameSide = myNameAddCount + "_" + ddl_side.selected
-
+	
 					mySel[i].name = myNameSide
 				)
 				else
@@ -176,7 +205,7 @@ rollout YG_namingTool ("YG_namingTool " + myVersion) width:432 height:344
 			if ddl_side.selected != "" then
 			(
 				myNameSide = myName + "_" + ddl_side.selected
-
+	
 				mySel[1].name = myNameSide
 			)
 			else
@@ -184,6 +213,10 @@ rollout YG_namingTool ("YG_namingTool " + myVersion) width:432 height:344
 				mySel[1].name = myName
 			)	
 		)
+	)
+	on btn_searchAndReplace pressed do
+	(
+		serchAndReplace edt_search.text edt_replace.text
 	)
 )
 createdialog YG_namingTool
