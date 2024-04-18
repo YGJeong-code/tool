@@ -227,7 +227,12 @@ lupinxyz@gmail.com
 			-- thigh
 			$pt_thigh_l.scale = [val, val, val]
 			$pt_thigh_r.scale = [val, val, val]
-			$thigh_l.transform = $pt_thigh_l.transform
+
+			myVol = rollout_volume.sld_body.value * rollout_volume.sld_thigh_volume.value * val --thigh volume
+			$thigh_twist_01_l.scale = [val, myVol, myVol]
+			$thigh_twist_02_l.scale = [val, myVol, myVol]
+			$thigh_twist_01_r.scale = [val, myVol, myVol]
+			$thigh_twist_02_r.scale = [val, myVol, myVol]			
 			
 			-- hand
 			myList = #($pt_hand_l,$pt_thumb_01_l,$pt_thumb_02_l,$pt_thumb_03_l,
@@ -253,7 +258,7 @@ lupinxyz@gmail.com
 			$pt_upperarm_r.scale = [val, val, val]
 
 			-- clavicle
-			myVol = rollout_volume.sld_body.value * rollout_volume.sld_neck_volume.value * val --neck volume
+			myVol = rollout_volume.sld_body.value * rollout_volume.sld_trapezoidal_volume.value * val --neck volume
 			$pt_clavicle_l.scale = [val, myVol, myVol]
 			$pt_clavicle_r.scale = [val, myVol, myVol]
 			
@@ -279,8 +284,7 @@ lupinxyz@gmail.com
 		)
 		fn btn_bodyHeight val =
 		(
-			sld_height.value = val
-			spn_height.value = val
+			sld_height.value = spn_height.value = val
 			bodyHeight(val)
 		)
 		fn neckLength myLen =
@@ -290,11 +294,13 @@ lupinxyz@gmail.com
 		)
 		fn chestLength myLen =
 		(
-			$pt_spine_04.scale = [myLen, spn_height.value, spn_height.value]
-			$pt_spine_05.scale = [myLen, spn_height.value, spn_height.value]
+			myVol = spn_height.value * rollout_volume.sld_body.value * rollout_volume.sld_chest_volume.value
+
+			$pt_spine_04.scale = [myLen, myVol, myVol]
+			$pt_spine_05.scale = [myLen, myVol, myVol]
 
 			myBip = execute("$" + rollout_character.edt_name.text + "Spine2")
-			biped.setTransform myBip #scale [myScale.Spine2[1]*myLen, myScale.Spine2[2]*myLen, myScale.Spine2[3]*myLen] false
+			biped.setTransform myBip #scale [myScale.Spine2[1]*myLen, myScale.Spine2[2]*myVol, myScale.Spine2[3]*myVol] false
 
 			myBip = execute("$" + rollout_character.edt_name.text + "Spine3")
 			biped.setTransform myBip #scale [myScale.Spine3[1]*myLen, myScale.Spine3[2]*myLen, myScale.Spine3[3]*myLen] false
@@ -371,13 +377,16 @@ lupinxyz@gmail.com
 				biped.setTransform (execute("$"+ myBip +"42")) #scale [myScale.LFinger42[1]*myLen, myScale.LFinger42[2]*spn_height.value, myScale.LFinger42[3]*spn_height.value] false
 			)
 		)
-		fn thighLenght myLen =
+		fn thighLength myLen =
 		(
+			myVol = spn_height.value * rollout_volume.sld_body.value * rollout_volume.sld_thigh_volume.value
+			-- myVol = rollout_volume.sld_body.value * rollout_volume.sld_thigh_volume.value
+
 			myList = #("LThigh","RThigh")
 			for i in myList do
 			(
 				myBip = execute("$"+rollout_character.edt_name.text+i)
-				biped.setTransform myBip #scale [myScale.LThigh[1]*myLen, myScale.LThigh[2]*spn_height.value, myScale.LThigh[3]*spn_height.value] false
+				biped.setTransform myBip #scale [myScale.LThigh[1]*myLen, myScale.LThigh[2]*myVol, myScale.LThigh[3]*myVol] false
 			)
 			
 			-- thigh length
@@ -396,12 +405,12 @@ lupinxyz@gmail.com
 			-- com z
 			myDist = myScale.myComEdit[3] + myDis - myScale.myThighDisEdit
 
-			-- com
+			-- com pos
 			biped.setTransform myBip #pos [myTrans[1], myTrans[2], myDist] false
 			
-			myLen = sld_thigh_length.value
-			$pt_thigh_l.scale = [myLen, spn_height.value, spn_height.value]
-			$pt_thigh_r.scale = [myLen, spn_height.value, spn_height.value]
+			-- myLen = sld_thigh_length.value
+			-- $pt_thigh_l.scale = [myLen, myVol, myVol]
+			-- $pt_thigh_r.scale = [myLen, myVol, myVol]
 			
 			-- myThighComEdit
 			myBip = execute("$"+rollout_character.edt_name.text)
@@ -585,7 +594,7 @@ lupinxyz@gmail.com
 			-- thigh
 			sld_thigh_length.value = spn_thigh_length.value = val = 1
 			myLen = spn_height.value * val
-			thighLenght(myLen)
+			thighLength(myLen)
 
 			-- calf
 			sld_calf_length.value = spn_calf_length.value = val = 1
@@ -816,19 +825,19 @@ lupinxyz@gmail.com
 		(
 			spn_thigh_length.value = val
 			myLen = spn_height.value * val
-			thighLenght(myLen)
+			thighLength(myLen)
 		)
 		on spn_thigh_length changed val do
 		(
 			sld_thigh_length.value = val
 			myLen = spn_height.value * val
-			thighLenght(myLen)
+			thighLength(myLen)
 		)
 		on btn_thigh_length pressed do
 		(
 			sld_thigh_length.value = spn_thigh_length.value = val = 1
 			myLen = spn_height.value * val
-			thighLenght(myLen)
+			thighLength(myLen)
 		)
 		/*----------------------------------------------------------------------------------------------------
 		11 calf length
@@ -890,9 +899,9 @@ lupinxyz@gmail.com
 		button 'btn_8' "8" pos:[216,104] width:33 height:40 align:#left
 
 		GroupBox 'grp_torso' "Torso" pos:[8,168] width:248 height:164 align:#left
-		slider 'sld_neck_volume' "01 Neck Volume" pos:[16,184] width:112 height:44 range:myRange align:#left
-		spinner 'spn_neck_volume' "" pos:[128,200] width:64 height:16 range:myRange scale:0.001 align:#left
-		button 'btn_neck_volume' "Reset" pos:[200,192] width:48 height:32 align:#left
+		slider 'sld_trapezoidal_volume' "01 Trapezoidal Volume" pos:[16,184] width:112 height:44 range:myRange align:#left
+		spinner 'spn_trapezoidal_volume' "" pos:[128,200] width:64 height:16 range:myRange scale:0.001 align:#left
+		button 'btn_trapezoidal_volume' "Reset" pos:[200,192] width:48 height:32 align:#left
 
 		slider 'sld_chest_volume' "02 Chest Volume" pos:[16,232] width:112 height:44 range:myRange align:#left
 		spinner 'spn_chest_volume' "" pos:[128,248] width:64 height:16 range:myRange scale:0.001 align:#left
@@ -903,7 +912,7 @@ lupinxyz@gmail.com
 		button 'btn_waist_volume' "Reset" pos:[200,288] width:48 height:32 align:#left
 	
 		GroupBox 'grp_arm' "Arm" pos:[264,8] width:248 height:160 align:#left
-		slider 'sld_shoulder_volume' "04 shoulder Volume" pos:[272,24] width:112 height:44 range:myRange align:#left
+		slider 'sld_shoulder_volume' "04 Shoulder Volume" pos:[272,24] width:112 height:44 range:myRange align:#left
 		spinner 'spn_shoulder_volume' "" pos:[384,40] width:64 height:16 range:myRange scale:0.001 align:#left
 		button 'btn_shoulder_volume' "Reset" pos:[456,32] width:48 height:32 align:#left
 
@@ -934,7 +943,7 @@ lupinxyz@gmail.com
 		fn uiEnabled val =
 		(
 			myList = #(
-				sld_neck_volume, btn_neck_volume,
+				sld_trapezoidal_volume, btn_trapezoidal_volume,
 				sld_chest_volume, btn_chest_volume,
 				sld_waist_volume, btn_waist_volume,
 				sld_shoulder_volume, btn_shoulder_volume,
@@ -954,134 +963,141 @@ lupinxyz@gmail.com
 		(
 			-- neck
 			myLen = rollout_length.sld_height.value
-			myVol = rollout_length.sld_height.value * sld_neck_volume.value * val
+			myVol = rollout_length.sld_height.value * sld_trapezoidal_volume.value * val
 			$pt_clavicle_l.scale = [myLen, myVol, myVol]
 			$pt_clavicle_r.scale = [myLen, myVol, myVol]
 
-			myLen = rollout_length.sld_height.value * rollout_length.sld_clavicle_length.value
-			myList = #("LClavicle","RClavicle")
-			for i in myList do
-			(
-				myBip = execute("$"+rollout_character.edt_name.text+i)
-				biped.setTransform myBip #scale [myScale.LClavicle[1]*myLen, myScale.LClavicle[2]*myVol, myScale.LClavicle[3]*myVol] false
-			)
+			-- myLen = rollout_length.sld_height.value * rollout_length.sld_clavicle_length.value
+			-- myList = #("LClavicle","RClavicle")
+			-- for i in myList do
+			-- (
+			-- 	myBip = execute("$"+rollout_character.edt_name.text+i)
+			-- 	biped.setTransform myBip #scale [myScale.LClavicle[1]*myLen, myScale.LClavicle[2]*myVol, myScale.LClavicle[3]*myVol] false
+			-- )
 
 			-- chest
-			myLen = rollout_length.sld_height.value
+			myLen = rollout_length.sld_height.value * rollout_length.sld_chest_length.value
 			myVol = rollout_length.sld_height.value * sld_chest_volume.value * val
 			$pt_spine_04.scale = [myLen, myVol, myVol]
 			$pt_spine_05.scale = [myLen, myVol, myVol]
 
-			myBip = execute("$" + rollout_character.edt_name.text + "Spine2")
-			biped.setTransform myBip #scale [myScale.Spine2[1]*myLen, myScale.Spine2[2]*myVol, myScale.Spine2[3]*myVol] false
+			-- myBip = execute("$" + rollout_character.edt_name.text + "Spine2")
+			-- biped.setTransform myBip #scale [myScale.Spine2[1]*myLen, myScale.Spine2[2]*myVol, myScale.Spine2[3]*myVol] false
 
-			myBip = execute("$" + rollout_character.edt_name.text + "Spine3")
-			biped.setTransform myBip #scale [myScale.Spine3[1]*myLen, myScale.Spine3[2]*myVol, myScale.Spine3[3]*myVol] false
+			-- myVol = rollout_length.sld_height.value * rollout_length.sld_chest_length.value * sld_chest_volume.value * val
+			-- myBip = execute("$" + rollout_character.edt_name.text + "Spine3")
+			-- biped.setTransform myBip #scale [myScale.Spine3[1]*myLen, myScale.Spine3[2]*myVol, myScale.Spine3[3]*myVol] false
 
 			-- waist
-			-- myLen = rollout_length.sld_height.value
+			myLen = rollout_length.sld_height.value
 			myVol = rollout_length.sld_height.value * sld_waist_volume.value * val
 			$pt_spine_02.scale = [myLen, myVol, myVol]
 
-			myBip = execute("$" + rollout_character.edt_name.text + "Spine")
-			biped.setTransform myBip #scale [myScale.Spine[1]*myLen, myScale.Spine[2]*myVol, myScale.Spine[3]*myVol] false
+			-- myBip = execute("$" + rollout_character.edt_name.text + "Spine1")
+			-- biped.setTransform myBip #scale [myScale.Spine1[1]*myLen, myScale.Spine1[2]*myVol, myScale.Spine1[3]*myVol] false
 
-			myBip = execute("$" + rollout_character.edt_name.text + "Spine1")
-			biped.setTransform myBip #scale [myScale.Spine1[1]*myLen, myScale.Spine1[2]*myVol, myScale.Spine1[3]*myVol] false
+			-- myLen = rollout_length.sld_height.value * rollout_length.sld_waist_length.value
+			-- myBip = execute("$" + rollout_character.edt_name.text + "Spine")
+			-- biped.setTransform myBip #scale [myScale.Spine[1]*myLen, myScale.Spine[2]*myVol, myScale.Spine[3]*myVol] false
 
 			-- shoulder
-			-- myLen = rollout_length.sld_height.value
+			myLen = rollout_length.sld_height.value
 			myVol = rollout_length.sld_height.value * sld_shoulder_volume.value * val
 			$upperarm_correctiveRoot_l.scale = [myLen, myVol, myVol]
 			$upperarm_correctiveRoot_r.scale = [myLen, myVol, myVol]
 
 			-- upperarm
-			-- myLen = rollout_length.sld_height.value
+			myLen = rollout_length.sld_height.value
 			myVol = rollout_length.sld_height.value * sld_upperarm_volume.value * val
 			$upperarm_twist_02_l.scale = [myLen, myVol, myVol]
 			$upperarm_twist_02_r.scale = [myLen, myVol, myVol]
 
 			-- lowerarm
-			-- myLen = rollout_length.sld_height.value
+			myLen = rollout_length.sld_height.value
 			myVol = rollout_length.sld_height.value * sld_lowerarm_volume.value * val
 			$pt_lowerarm_l.scale = [myLen, myVol, myVol]
 			$pt_lowerarm_r.scale = [myLen, myVol, myVol]
 
-			myList = #("LForeArm","RForeArm")
-			for i in myList do
-			(
-				myBip = execute("$"+rollout_character.edt_name.text + i)
-				biped.setTransform myBip #scale [myScale.LForeArm[1]*myLen, myScale.LForeArm[2]*myVol, myScale.LForeArm[3]*myVol] false
-			)
+			-- myLen = rollout_length.sld_height.value * rollout_length.sld_lowerarm_length.value
+			-- myList = #("LForeArm","RForeArm")
+			-- for i in myList do
+			-- (
+			-- 	myBip = execute("$"+rollout_character.edt_name.text + i)
+			-- 	biped.setTransform myBip #scale [myScale.LForeArm[1]*myLen, myScale.LForeArm[2]*myVol, myScale.LForeArm[3]*myVol] false
+			-- )
 
 			-- hip
-			-- myLen = rollout_length.sld_height.value
 			myVol = rollout_length.sld_height.value * sld_hip_volume.value * val
-			$thigh_bck_lwr_l.scale = [myLen, myVol, myVol]
-			$thigh_bck_lwr_r.scale = [myLen, myVol, myVol]
+			$thigh_bck_lwr_l.scale = [myVol, myVol, myVol]
+			$thigh_bck_lwr_r.scale = [myVol, myVol, myVol]
 
 			-- thigh
-			-- myLen = rollout_length.sld_height.value
+			myLen = rollout_length.sld_height.value
 			myVol = rollout_length.sld_height.value * sld_thigh_volume.value * val
-			$thigh_twistCor_01_l.scale = [myLen, myVol, myVol]
-			$thigh_twistCor_02_l.scale = [myLen, myVol, myVol]
-			$thigh_twistCor_01_r.scale = [myLen, myVol, myVol]
-			$thigh_twistCor_02_r.scale = [myLen, myVol, myVol]
+			$thigh_twist_01_l.scale = [myLen, myVol, myVol]
+			$thigh_twist_02_l.scale = [myLen, myVol, myVol]
+			$thigh_twist_01_r.scale = [myLen, myVol, myVol]
+			$thigh_twist_02_r.scale = [myLen, myVol, myVol]
 
-			myList = #("LThigh","RThigh")
-			for i in myList do
-			(
-				myBip = execute("$"+rollout_character.edt_name.text + i)
-				biped.setTransform myBip #scale [myScale.LThigh[1]*myLen, myScale.LThigh[2]*myVol, myScale.LThigh[3]*myVol] false
-			)
+			-- print("sld_height.value")
+			-- print(myLen)
+			
+			-- myList = #("LThigh","RThigh")
+			-- for i in myList do
+			-- (
+			-- 	myBip = execute("$"+rollout_character.edt_name.text + i)
+			-- 	biped.setTransform myBip #scale [myScale.LThigh[1]*myLen, myScale.LThigh[2]*myVol, myScale.LThigh[3]*myVol] false
+			-- )
 
 			-- calf
-			-- myLen = rollout_length.sld_height.value
+			myLen = rollout_length.sld_height.value
 			myVol = rollout_length.sld_height.value * sld_calf_volume.value * val
 			$pt_calf_l.scale = [myLen, myVol, myVol]
 			$pt_calf_r.scale = [myLen, myVol, myVol]
 		)
 		fn btn_bodyVolume val =
 		(
-			val = sld_body.value = spn_body.value = val
+			sld_body.value = spn_body.value = val
 			bodyVolume(val)
 		)
-		fn neckVolume myVol =
+		fn trapezoidalVolume myVol =
 		(
-			myLen = rollout_length.sld_height.value
+			myLen = rollout_length.sld_height.value --* rollout_length.sld_clavicle_length.value
 			$pt_clavicle_l.scale = [myLen, myVol, myVol]
 			$pt_clavicle_r.scale = [myLen, myVol, myVol]
 
-			myLen = rollout_length.sld_height.value * rollout_length.sld_clavicle_length.value
-			myList = #("LClavicle","RClavicle")
-			for i in myList do
-			(
-				myBip = execute("$"+rollout_character.edt_name.text+i)
-				biped.setTransform myBip #scale [myScale.LClavicle[1]*myLen, myScale.LClavicle[2]*myVol, myScale.LClavicle[3]*myVol] false
-			)
+			-- myLen = rollout_length.sld_height.value * rollout_length.sld_clavicle_length.value
+			-- myList = #("LClavicle","RClavicle")
+			-- for i in myList do
+			-- (
+			-- 	myBip = execute("$"+rollout_character.edt_name.text+i)
+			-- 	biped.setTransform myBip #scale [myScale.LClavicle[1]*myLen, myScale.LClavicle[2]*myVol, myScale.LClavicle[3]*myVol] false
+			-- )
 		)
 		fn chestVolume myVol =
 		(
-			myLen = rollout_length.sld_height.value
+			myLen = rollout_length.sld_height.value * rollout_length.sld_chest_length.value
 			$pt_spine_04.scale = [myLen, myVol, myVol]
 			$pt_spine_05.scale = [myLen, myVol, myVol]
 
-			myBip = execute("$" + rollout_character.edt_name.text + "Spine2")
-			biped.setTransform myBip #scale [myScale.Spine2[1]*myLen, myScale.Spine2[2]*myVol, myScale.Spine2[3]*myVol] false
+			-- myBip = execute("$" + rollout_character.edt_name.text + "Spine2")
+			-- biped.setTransform myBip #scale [myScale.Spine2[1]*myLen, myScale.Spine2[2]*myVol, myScale.Spine2[3]*myVol] false
 
-			myBip = execute("$" + rollout_character.edt_name.text + "Spine3")
-			biped.setTransform myBip #scale [myScale.Spine3[1]*myLen, myScale.Spine3[2]*myVol, myScale.Spine3[3]*myVol] false
+			-- myVol = rollout_length.sld_height.value * rollout_length.sld_chest_length.value * sld_chest_volume.value * myVol			
+			-- myBip = execute("$" + rollout_character.edt_name.text + "Spine3")
+			-- biped.setTransform myBip #scale [myScale.Spine3[1]*myLen, myScale.Spine3[2]*myVol, myScale.Spine3[3]*myVol] false
 		)
 		fn waistVolume myVol =
 		(
 			myLen = rollout_length.sld_height.value
 			$pt_spine_02.scale = [myLen, myVol, myVol]
 
-			myBip = execute("$" + rollout_character.edt_name.text + "Spine")
-			biped.setTransform myBip #scale [myScale.Spine[1]*myLen, myScale.Spine[2]*myVol, myScale.Spine[3]*myVol] false
+			-- myBip = execute("$" + rollout_character.edt_name.text + "Spine1")
+			-- biped.setTransform myBip #scale [myScale.Spine1[1]*myLen, myScale.Spine1[2]*myVol, myScale.Spine1[3]*myVol] false
 
-			myBip = execute("$" + rollout_character.edt_name.text + "Spine1")
-			biped.setTransform myBip #scale [myScale.Spine1[1]*myLen, myScale.Spine1[2]*myVol, myScale.Spine1[3]*myVol] false
+			-- myLen = rollout_length.sld_height.value * rollout_length.sld_waist_length.value
+			-- myBip = execute("$" + rollout_character.edt_name.text + "Spine")
+			-- biped.setTransform myBip #scale [myScale.Spine[1]*myLen, myScale.Spine[2]*myVol, myScale.Spine[3]*myVol] false
 		)
 		fn shoulderVolume myVol =
 		(
@@ -1101,37 +1117,46 @@ lupinxyz@gmail.com
 			$pt_lowerarm_l.scale = [myLen, myVol, myVol]
 			$pt_lowerarm_r.scale = [myLen, myVol, myVol]
 
-			myList = #("LForeArm","RForeArm")
-			for i in myList do
-			(
-				myBip = execute("$"+rollout_character.edt_name.text + i)
-				biped.setTransform myBip #scale [myScale.LForeArm[1]*myLen, myScale.LForeArm[2]*myVol, myScale.LForeArm[3]*myVol] false
-			)
+			-- myLen = rollout_length.sld_height.value * rollout_length.sld_lowerarm_length.value
+			-- myList = #("LForeArm","RForeArm")
+			-- for i in myList do
+			-- (
+			-- 	myBip = execute("$"+rollout_character.edt_name.text + i)
+			-- 	biped.setTransform myBip #scale [myScale.LForeArm[1]*myLen, myScale.LForeArm[2]*myVol, myScale.LForeArm[3]*myVol] false
+			-- )
 		)
 		fn hipVolume myVol =
 		(
-			myLen = rollout_length.sld_height.value
-			$thigh_bck_lwr_l.scale = [myLen, myVol, myVol]
-			$thigh_bck_lwr_r.scale = [myLen, myVol, myVol]
+			$thigh_bck_lwr_l.scale = [myVol, myVol, myVol]
+			$thigh_bck_lwr_r.scale = [myVol, myVol, myVol]
 		)
 		fn thighVolume myVol =
 		(
+			-- myLen = rollout_length.sld_height.value * rollout_length.sld_thigh_length.value
 			myLen = rollout_length.sld_height.value
-			$thigh_twistCor_01_l.scale = [myLen, myVol, myVol]
-			$thigh_twistCor_02_l.scale = [myLen, myVol, myVol]
-			$thigh_twistCor_01_r.scale = [myLen, myVol, myVol]
-			$thigh_twistCor_02_r.scale = [myLen, myVol, myVol]
+			myVol = rollout_length.sld_height.value * myVol
 
-			myList = #("LThigh","RThigh")
-			for i in myList do
-			(
-				myBip = execute("$"+rollout_character.edt_name.text + i)
-				biped.setTransform myBip #scale [myScale.LThigh[1]*myLen, myScale.LThigh[2]*myVol, myScale.LThigh[3]*myVol] false
-			)
+			$thigh_twist_01_l.scale = [myLen, myVol, myVol]
+			$thigh_twist_02_l.scale = [myLen, myVol, myVol]
+			$thigh_twist_01_r.scale = [myLen, myVol, myVol]
+			$thigh_twist_02_r.scale = [myLen, myVol, myVol]
+
+			-- print("sld_height.value")
+			-- print(myLen)
+
+			-- myLen = rollout_length.sld_height.value * rollout_length.sld_thigh_length.value
+			-- myList = #("LThigh","RThigh")
+			-- for i in myList do
+			-- (
+			-- 	myBip = execute("$"+rollout_character.edt_name.text + i)
+			-- 	biped.setTransform myBip #scale [myScale.LThigh[1]*myLen, myScale.LThigh[2]*myVol, myScale.LThigh[3]*myVol] false
+			-- )
 		)
 		fn calfVolume myVol =
 		(
-			myLen = rollout_length.sld_height.value
+			myLen = rollout_length.sld_height.value * rollout_length.sld_calf_length.value
+			myVol = rollout_length.sld_height.value * myVol
+
 			$pt_calf_l.scale = [myLen, myVol, myVol]
 			$pt_calf_r.scale = [myLen, myVol, myVol]
 		)
@@ -1170,25 +1195,25 @@ lupinxyz@gmail.com
 		on btn_8 pressed do btn_bodyVolume(1.3)
 
 		/*----------------------------------------------------------------------------------------------------
-		01 neck volume
+		01 trapezoidal volume
 		*/----------------------------------------------------------------------------------------------------
-		on sld_neck_volume changed val do
+		on sld_trapezoidal_volume changed val do
 		(
-			spn_neck_volume.value = val
+			spn_trapezoidal_volume.value = val
 			myVol = rollout_length.sld_height.value * sld_body.value * val
-			neckVolume(myVol)
+			trapezoidalVolume(myVol)
 		)
-		on spn_neck_volume changed val do
+		on spn_trapezoidal_volume changed val do
 		(
-			sld_neck_volume.value = val
+			sld_trapezoidal_volume.value = val
 			myVol = rollout_length.sld_height.value * sld_body.value * val
-			neckVolume(myVol)
+			trapezoidalVolume(myVol)
 		)
-		on btn_neck_volume pressed do
+		on btn_trapezoidal_volume pressed do
 		(
-			val = sld_neck_volume.value = spn_neck_volume.value = 1
+			val = sld_trapezoidal_volume.value = spn_trapezoidal_volume.value = 1
 			myVol = rollout_length.sld_height.value * sld_body.value * val			
-			neckVolume(myVol)
+			trapezoidalVolume(myVol)
 		)
 		/*----------------------------------------------------------------------------------------------------
 		02 chest volume
@@ -1322,19 +1347,19 @@ lupinxyz@gmail.com
 		on sld_thigh_volume changed val do
 		(
 			spn_thigh_volume.value = val
-			myVol = rollout_length.sld_height.value * sld_body.value * val
+			myVol = sld_body.value * val
 			thighVolume(myVol)
 		)
 		on spn_thigh_volume changed val do
 		(
 			sld_thigh_volume.value = val
-			myVol = rollout_length.sld_height.value * sld_body.value * val			
+			myVol = sld_body.value * val
 			thighVolume(myVol)
 		)
 		on btn_thigh_volume pressed do
 		(
 			val = sld_thigh_volume.value = spn_thigh_volume.value = 1
-			myVol = rollout_length.sld_height.value * sld_body.value * val			
+			myVol = sld_body.value * val			
 			thighVolume(myVol)
 		)
 		/*----------------------------------------------------------------------------------------------------
@@ -1343,19 +1368,19 @@ lupinxyz@gmail.com
 		on sld_calf_volume changed val do
 		(
 			spn_calf_volume.value = val
-			myVol = rollout_length.sld_height.value * sld_body.value * val
+			myVol = sld_body.value * val
 			calfVolume(myVol)
 		)
 		on spn_calf_volume changed val do
 		(
 			sld_calf_volume.value = val
-			myVol = rollout_length.sld_height.value * sld_body.value * val			
+			myVol = sld_body.value * val			
 			calfVolume(myVol)
 		)
 		on btn_calf_volume pressed do
 		(
 			val = sld_calf_volume.value = spn_calf_volume.value = 1
-			myVol = rollout_length.sld_height.value * sld_body.value * val			
+			myVol = sld_body.value * val			
 			calfVolume(myVol)
 		)
 	)
