@@ -1,7 +1,7 @@
 /*
 YG_rigTool
 since 2023.10.24
-last updated 2023.12.15
+last updated 2024.04.19
 by YeonGyun,Jeong
 lupinxyz@gmail.com
 */
@@ -72,118 +72,118 @@ struct boneStruct
 	myName = "",
 
 	myBip = execute ("$"+ "com"),
-	myPelvis = execute ("$"+ myName + "pelvis"),
+	myPelvis = execute ("$" + "pelvis"),
 
-	-- mySpine = execute ("$" + myName + "spine_01"),
-	mySpine1 = execute ("$" + myName + "spine_02"),
-	mySpine2 = execute ("$" + myName + "spine_03"),
-	mySpine3 = execute ("$" + myName + "spine_04"),
-	mySpine4 = execute ("$" + myName + "spine_05"),
+	-- mySpine = execute ("$"  + "spine_01"),
+	mySpine1 = execute ("$"  + "spine_02"),
+	mySpine2 = execute ("$"  + "spine_03"),
+	mySpine3 = execute ("$"  + "spine_04"),
+	mySpine4 = execute ("$"  + "spine_05"),
 
-	myNeck = execute ("$"+ myName + "neck_01"),
-	myHead = execute ("$"+ myName + "head"),
+	myNeck = execute ("$" + "neck_01"),
+	myHead = execute ("$" + "head"),
 
-	myClavicleL = execute ("$"+ myName + "clavicle_l"),
-	myUpperArmL = execute ("$"+ myName + "upperarm_l"),
-	myForearmL = execute ("$"+ myName + "lowerarm_l"),
-	myHandL = execute ("$"+ myName + "hand_l"),
+	myClavicleL = execute ("$" + "clavicle_l"),
+	myUpperArmL = execute ("$" + "upperarm_l"),
+	myForearmL = execute ("$" + "lowerarm_l"),
+	myHandL = execute ("$" + "hand_l"),
 
-	myFinger0L = execute ("$"+ myName + "thumb_01_l"),
-	myFinger01L = execute ("$"+ myName + "thumb_02_l"),
-	myFinger02L = execute ("$"+ myName + "thumb_03_l"),
+	myFinger0L = execute ("$" + "thumb_01_l"),
+	myFinger01L = execute ("$" + "thumb_02_l"),
+	myFinger02L = execute ("$" + "thumb_03_l"),
 
-	myFinger1L = execute ("$"+ myName + "index_01_l"),
-	myFinger11L = execute ("$"+ myName + "index_02_l"),
-	myFinger12L = execute ("$"+ myName + "index_03_l"),
+	myFinger1L = execute ("$" + "index_01_l"),
+	myFinger11L = execute ("$" + "index_02_l"),
+	myFinger12L = execute ("$" + "index_03_l"),
 
-	myFinger2L = execute ("$"+ myName + "middle_01_l"),
-	myFinger21L = execute ("$"+ myName + "middle_02_l"),
-	myFinger22L = execute ("$"+ myName + "middle_03_l"),
+	myFinger2L = execute ("$" + "middle_01_l"),
+	myFinger21L = execute ("$" + "middle_02_l"),
+	myFinger22L = execute ("$" + "middle_03_l"),
 
-	myFinger3L = execute ("$"+ myName + "ring_01_l"),
-	myFinger31L = execute ("$"+ myName + "ring_02_l"),
-	myFinger32L = execute ("$"+ myName + "ring_03_l"),
+	myFinger3L = execute ("$" + "ring_01_l"),
+	myFinger31L = execute ("$" + "ring_02_l"),
+	myFinger32L = execute ("$" + "ring_03_l"),
 
-	myFinger4L = execute ("$"+ myName + "pinky_01_l"),
-	myFinger41L = execute ("$"+ myName + "pinky_02_l"),
-	myFinger42L = execute ("$"+ myName + "pinky_03_l"),
+	myFinger4L = execute ("$" + "pinky_01_l"),
+	myFinger41L = execute ("$" + "pinky_02_l"),
+	myFinger42L = execute ("$" + "pinky_03_l"),
 
-	myThighL = execute ("$"+ myName + "thigh_l"),
-	myCalfL = execute ("$"+ myName + "calf_l"),
-	myHorseLinkL = execute ("$"+ myName + "horseLink_l"),
-	myFootL = execute ("$"+ myName + "foot_l"),
+	myThighL = execute ("$" + "thigh_l"),
+	myCalfL = execute ("$" + "calf_l"),
+	myHorseLinkL = execute ("$" + "horseLink_l"),
+	myFootL = execute ("$" + "foot_l"),
 
-	myToe0L = execute ("$"+ myName + "ball_l"),
-	myToe01L = execute ("$"+ myName + "ball_01_l"),
+	myToe0L = execute ("$" + "ball_l"),
+	myToe01L = execute ("$" + "ball_01_l"),
 
-	myToe1L = execute ("$"+ myName + "ball_1_l"),
-	myToe11L = execute ("$"+ myName + "ball_11_l"),
+	myToe1L = execute ("$" + "ball_1_l"),
+	myToe11L = execute ("$" + "ball_11_l"),
 
-	myToe2L = execute ("$"+ myName + "ball_2_l"),
-	myToe21L = execute ("$"+ myName + "ball_21_l"),
+	myToe2L = execute ("$" + "ball_2_l"),
+	myToe21L = execute ("$" + "ball_21_l"),
 
-	myToe3L = execute ("$"+ myName + "ball_3_l"),
-	myToe31L = execute ("$"+ myName + "ball_31_l"),
+	myToe3L = execute ("$" + "ball_3_l"),
+	myToe31L = execute ("$" + "ball_31_l"),
 
-	myToe4L = execute ("$"+ myName + "ball_4_l"),
-	myToe41L = execute ("$"+ myName + "ball_41_l"),
+	myToe4L = execute ("$" + "ball_4_l"),
+	myToe41L = execute ("$" + "ball_41_l"),
 
-	myClavicleR = execute ("$"+ myName + "clavicle_r"),
-	myUpperArmR = execute ("$"+ myName + "upperarm_r"),
-	myForearmR = execute ("$"+ myName + "lowerarm_r"),
-	myHandR = execute ("$"+ myName + "hand_r"),
+	myClavicleR = execute ("$" + "clavicle_r"),
+	myUpperArmR = execute ("$" + "upperarm_r"),
+	myForearmR = execute ("$" + "lowerarm_r"),
+	myHandR = execute ("$" + "hand_r"),
 
-	-- myProp = execute ("$"+ myName + "weapon_r"),
+	-- myProp = execute ("$" + "weapon_r"),
 
-	myFinger0R = execute ("$"+ myName + "thumb_01_r"),
-	myFinger01R = execute ("$"+ myName + "thumb_02_r"),
-	myFinger02R = execute ("$"+ myName + "thumb_03_r"),
+	myFinger0R = execute ("$" + "thumb_01_r"),
+	myFinger01R = execute ("$" + "thumb_02_r"),
+	myFinger02R = execute ("$" + "thumb_03_r"),
 
-	myFinger1R = execute ("$"+ myName + "index_01_r"),
-	myFinger11R = execute ("$"+ myName + "index_02_r"),
-	myFinger12R = execute ("$"+ myName + "index_03_r"),
+	myFinger1R = execute ("$" + "index_01_r"),
+	myFinger11R = execute ("$" + "index_02_r"),
+	myFinger12R = execute ("$" + "index_03_r"),
 
-	myFinger2R = execute ("$"+ myName + "middle_01_r"),
-	myFinger21R = execute ("$"+ myName + "middle_02_r"),
-	myFinger22R = execute ("$"+ myName + "middle_03_r"),
+	myFinger2R = execute ("$" + "middle_01_r"),
+	myFinger21R = execute ("$" + "middle_02_r"),
+	myFinger22R = execute ("$" + "middle_03_r"),
 
-	myFinger3R = execute ("$"+ myName + "ring_01_r"),
-	myFinger31R = execute ("$"+ myName + "ring_02_r"),
-	myFinger32R = execute ("$"+ myName + "ring_03_r"),
+	myFinger3R = execute ("$" + "ring_01_r"),
+	myFinger31R = execute ("$" + "ring_02_r"),
+	myFinger32R = execute ("$" + "ring_03_r"),
 
-	myFinger4R = execute ("$"+ myName + "pinky_01_r"),
-	myFinger41R = execute ("$"+ myName + "pinky_02_r"),
-	myFinger42R = execute ("$"+ myName + "pinky_03_r"),
+	myFinger4R = execute ("$" + "pinky_01_r"),
+	myFinger41R = execute ("$" + "pinky_02_r"),
+	myFinger42R = execute ("$" + "pinky_03_r"),
 
-	myThighR = execute ("$"+ myName + "thigh_r"),
-	myCalfR = execute ("$"+ myName + "calf_r"),
-	myHorseLinkR = execute ("$"+ myName + "horseLink_r"),
-	myFootR = execute ("$"+ myName + "foot_r"),
+	myThighR = execute ("$" + "thigh_r"),
+	myCalfR = execute ("$" + "calf_r"),
+	myHorseLinkR = execute ("$" + "horseLink_r"),
+	myFootR = execute ("$" + "foot_r"),
 
-	myToe0R = execute ("$"+ myName + "ball_r"),
-	myToe01R = execute ("$"+ myName + "ball_01_r"),
+	myToe0R = execute ("$" + "ball_r"),
+	myToe01R = execute ("$" + "ball_01_r"),
 
-	myToe1R = execute ("$"+ myName + "ball_1_r"),
-	myToe11R = execute ("$"+ myName + "ball_11_r"),
+	myToe1R = execute ("$" + "ball_1_r"),
+	myToe11R = execute ("$" + "ball_11_r"),
 
-	myToe2R = execute ("$"+ myName + "ball_2_r"),
-	myToe21R = execute ("$"+ myName + "ball_21_r"),
+	myToe2R = execute ("$" + "ball_2_r"),
+	myToe21R = execute ("$" + "ball_21_r"),
 
-	myToe3R = execute ("$"+ myName + "ball_3_r"),
-	myToe31R = execute ("$"+ myName + "ball_31_r"),
+	myToe3R = execute ("$" + "ball_3_r"),
+	myToe31R = execute ("$" + "ball_31_r"),
 
-	myToe4R = execute ("$"+ myName + "ball_4_r"),
-	myToe41R = execute ("$"+ myName + "ball_41_r"),
+	myToe4R = execute ("$" + "ball_4_r"),
+	myToe41R = execute ("$" + "ball_41_r"),
 
-	myTail = execute ("$"+ myName + "Tail"),
-	myTail1 = execute ("$"+ myName + "Tail1"),
-	myTail2 = execute ("$"+ myName + "Tail2"),
-	myTail3 = execute ("$"+ myName + "Tail3"),
-	myTail4 = execute ("$"+ myName + "Tail4"),
-	myTail5 = execute ("$"+ myName + "Tail5"),
-	myTail6 = execute ("$"+ myName + "Tail6"),
-	myTail7 = execute ("$"+ myName + "Tail7"),
-	myTail8 = execute ("$"+ myName + "Tail8"),
+	myTail = execute ("$" + "Tail"),
+	myTail1 = execute ("$" + "Tail1"),
+	myTail2 = execute ("$" + "Tail2"),
+	myTail3 = execute ("$" + "Tail3"),
+	myTail4 = execute ("$" + "Tail4"),
+	myTail5 = execute ("$" + "Tail5"),
+	myTail6 = execute ("$" + "Tail6"),
+	myTail7 = execute ("$" + "Tail7"),
+	myTail8 = execute ("$" + "Tail8"),
 
 	myAllList = #(myBip,myPelvis,mySpine1,mySpine2,mySpine3,mySpine4,myNeck,myHead,
 		myClavicleL,myUpperArmL,myForearmL,myHandL,
@@ -391,11 +391,11 @@ myTopLayerList = #("PCM_BaseBody","PCF_BaseBody","Weapon","Monster")
 myName = "Bip001"
 myBip = $Bip001
 
-myVersion = "v1.0"
+myVersion = "v1.1"
 	
 try( destroydialog YG_rigTool ) catch()
 
-rollout YG_rigTool "YG_rigTool v1.0" width:160 height:408
+rollout YG_rigTool ("YG_rigTool " + myVersion) width:160 height:408
 (
 	GroupBox 'grp1' "Bone" pos:[8,8] width:144 height:160 align:#left
 	spinner 'spn_boneSize' "Bone Size" pos:[16,24] width:67 height:16 range:[1,20,5] type:#integer scale:1 align:#left
@@ -677,7 +677,7 @@ rollout YG_rigTool "YG_rigTool v1.0" width:160 height:408
 		if myType == "pos" then
 		(
 			myConst = myDriven.position.controller = Position_constraint()
-			myConst.relative = on
+			myConst.relative = off
 			myConst.appendTarget myDriver 50
 		)
 		else if myType == "pos2" then
@@ -1327,14 +1327,14 @@ rollout YG_rigTool "YG_rigTool v1.0" width:160 height:408
 		$pt_upperarm_l.parent = $con_arm_1_l
 		$pt_lowerarm_l.parent = $con_arm_2_l
 		$pt_hand_l.parent = $con_arm_3_l
-		try(
-			myBoneList = #($thumb_01_l,$thumb_02_l,$thumb_03_l,
-				$index_01_l,$index_02_l,$index_03_l,
-				$middle_01_l,$middle_02_l,$middle_03_l,
-				$ring_01_l,$ring_02_l,$ring_03_l,
-				$pinky_01_l,$pinky_02_l,$pinky_03_l)
-			for i in myBoneList do makeConst "basic_pos" i i
-		)catch()
+		-- try(
+		-- 	myList = #("thumb_01","thumb_02","thumb_03",
+		-- 		"index_01","index_02","index_03",
+		-- 		"middle_01","middle_02","middle_03",
+		-- 		"ring_01","ring_02","ring_03",
+		-- 		"pinky_01","pinky_02","pinky_03")
+		-- 	for i in myBoneList do makeConst "basic_pos" i i
+		-- )catch()
 
 		--arm right
 		$pt_tw_arm_main_r.parent = myBipStruct.myClavicleR
@@ -1350,14 +1350,14 @@ rollout YG_rigTool "YG_rigTool v1.0" width:160 height:408
 		$pt_upperarm_r.parent = $con_arm_1_r
 		$pt_lowerarm_r.parent = $con_arm_2_r
 		$pt_hand_r.parent = $con_arm_3_r
-		try(
-			myBoneList = #($thumb_01_r,$thumb_02_r,$thumb_03_r,
-				$index_01_r,$index_02_r,$index_03_r,
-				$middle_01_r,$middle_02_r,$middle_03_r,
-				$ring_01_r,$ring_02_r,$ring_03_r,
-				$pinky_01_r,$pinky_02_r,$pinky_03_r)
-			for i in myBoneList do makeConst "basic_pos" i i
-		)catch()
+		-- try(
+		-- 	myBoneList = #($thumb_01_r,$thumb_02_r,$thumb_03_r,
+		-- 		$index_01_r,$index_02_r,$index_03_r,
+		-- 		$middle_01_r,$middle_02_r,$middle_03_r,
+		-- 		$ring_01_r,$ring_02_r,$ring_03_r,
+		-- 		$pinky_01_r,$pinky_02_r,$pinky_03_r)
+		-- 	for i in myBoneList do makeConst "basic_pos" i i
+		-- )catch()
 
 		--leg left
 		$pt_tw_leg_main_l.parent = myBipStruct.myBip
@@ -1469,7 +1469,7 @@ rollout YG_rigTool "YG_rigTool v1.0" width:160 height:408
 		)
 
 		--
-		myLayerList = #("bip","bip+","bone","bone_export_ani","bone+","con","socket","geo","cut")
+		myLayerList = #("bip", "bip+", "bone", "bone_currective", "bone_export_ani", "bone_socket", "bone+", "pt", "line", "con_arm_leg", "con_socket", "geo")
 
 
 		for i in myLayerList do
@@ -1480,7 +1480,7 @@ rollout YG_rigTool "YG_rigTool v1.0" width:160 height:408
 				myLayer = LayerManager.newLayer()
 				myLayer.setName i
 			)
-			/*
+			
 			if i == "geo" then
 			(
 				select geometry
@@ -1492,7 +1492,7 @@ rollout YG_rigTool "YG_rigTool v1.0" width:160 height:408
 				)
 				clearSelection()
 			)
-			*/
+			/*
 			if i == "cut" then
 			(
 				try
@@ -1505,7 +1505,7 @@ rollout YG_rigTool "YG_rigTool v1.0" width:160 height:408
 					clearSelection()
 				)catch()
 			)
-
+			*/
 			if i == "bip" then
 			(
 				myList = myBipStruct.myAllList
@@ -1535,17 +1535,15 @@ rollout YG_rigTool "YG_rigTool v1.0" width:160 height:408
 				try(for j in myList do myLayer.addnode j)catch()
 			)
 
-			if i == "bone" then
+			if i == "bone_currective" then
 			(
 				if $root != undefined do
 				(
 					myLayer.addnode $root
 
 					select (getAllChildren $root arr:(selection as array))
-					for i in selection do
-					(
-						myLayer.addnode i
-					)
+					for i in selection do myLayer.addnode i
+
 					clearSelection()
 				)
 			)
@@ -1569,56 +1567,69 @@ rollout YG_rigTool "YG_rigTool v1.0" width:160 height:408
 					$thumb_01_r, $thumb_02_r, $thumb_03_r,
 
 					$thigh_l, $calf_l, $foot_l, $ball_l,
-					$thigh_r, $calf_r, $foot_r, $ball_r,
-
-					$weapon_l, $weapon_r, $weapon_back_l, $weapon_back_r, $weapon_waist_l, $weapon_waist_r
+					$thigh_r, $calf_r, $foot_r, $ball_r
 				)
 
 				try
 				(
 					select myList
-					for i in selection do
-					(
-						myLayer.addnode i
-					)
+					for i in selection do myLayer.addnode i
+
 					clearSelection()
 				)catch()
 			)
 
-			if i == "bone+" then
+			if i == "bone_socket" then
+			(
+				myList = #($weapon_l, $weapon_r, $weapon_back_l, $weapon_back_r, $weapon_waist_l, $weapon_waist_r)
+
+				try
+				(
+					select myList
+					for i in selection do myLayer.addnode i
+
+					clearSelection()
+				)catch()
+			)
+
+			if i == "pt" then
 			(
 				select $pt_*
-				for i in selection do
-				(
-					myLayer.addnode i
-				)
-				clearSelection()
+				for i in selection do myLayer.addnode i
 
-				select $line_*
-				for i in selection do
-				(
-					myLayer.addnode i
-				)
 				clearSelection()
 			)
 
-			if i == "con" then
+			if i == "line" then
 			(
-				select $con_*
-				for i in selection do
-				(
-					myLayer.addnode i
-				)
+				select $line_*
+				for i in selection do myLayer.addnode i
+
 				clearSelection()
 			)
 
-			if i == "socket" then
+			if i == "con_arm_leg" then
+			(
+				select $con_arm*
+				for i in selection do myLayer.addnode i
+
+				select $con_leg*
+				for i in selection do myLayer.addnode i
+
+				clearSelection()
+			)
+
+			if i == "con_socket" then
 			(
 				select $con_weapon_*
-				for i in selection do
-				(
-					myLayer.addnode i
-				)
+				for i in selection do myLayer.addnode i
+
+				select $con_potion_*
+				for i in selection do myLayer.addnode i
+
+				select $con_shield_*
+				for i in selection do myLayer.addnode i
+
 				clearSelection()
 			)
 
@@ -1630,15 +1641,18 @@ rollout YG_rigTool "YG_rigTool v1.0" width:160 height:408
 		myBipPlusLayer = LayerManager.getLayerFromName "bip+"
 		
 		myBoneLayer = LayerManager.getLayerFromName "bone"
-		-- myBoneExportLayer = LayerManager.getLayerFromName "bone_export"
 		myBoneExportAniLayer = LayerManager.getLayerFromName "bone_export_ani"
+		myBoneCurrectiveLayer = LayerManager.getLayerFromName "bone_currective"
 
 		myBonePlusLayer = LayerManager.getLayerFromName "bone+"
-		myConLayer = LayerManager.getLayerFromName "con"
-		mySocketLayer = LayerManager.getLayerFromName "socket"
+		myPTLayer = LayerManager.getLayerFromName "pt"
+		myLineLayer = LayerManager.getLayerFromName "line"
+
+		myConLayer = LayerManager.getLayerFromName "con_arm_leg"
+		mySocketLayer = LayerManager.getLayerFromName "con_socket"
 
 		myGeoLayer = LayerManager.getLayerFromName "geo"
-		myCutLayer = LayerManager.getLayerFromName "cut"
+		-- myCutLayer = LayerManager.getLayerFromName "cut"
 
 		-- set parent
 		myBipLayer.setParent myTopLayer
@@ -1647,13 +1661,16 @@ rollout YG_rigTool "YG_rigTool v1.0" width:160 height:408
 		myBoneLayer.setParent myTopLayer
 		-- myBoneExportLayer.setParent myBoneLayer
 		myBoneExportAniLayer.setParent myBoneLayer
+		myBoneCurrectiveLayer.setParent myBonePlusLayer
+		myPTLayer.setParent myBonePlusLayer
+		myLineLayer.setParent myBonePlusLayer
 
 		myBonePlusLayer.setParent myTopLayer
 		myConLayer.setParent myTopLayer
 		mySocketLayer.setParent myTopLayer
 
 		myGeoLayer.setParent myTopLayer
-		myCutLayer.setParent myGeoLayer
+		-- myCutLayer.setParent myGeoLayer
 
 		-- set layer property
 		myBipLayer.boxmode = true
