@@ -93,19 +93,23 @@ class MyWindow(QtWidgets.QDialog):
     def create_matchJoint_layout(self):
         # button
         self.matchBodyJnt_btn = QtWidgets.QPushButton('MH_Body to Bip')
-        self.matchFaceJnt_btn = QtWidgets.QPushButton('MH_Face to MH_Body')
-        self.constFaceJnt_btn = QtWidgets.QPushButton('Constraints Face to Body')
-        # self.drvJointZero_btn = QtWidgets.QPushButton('Drv Joint to Zero')
+        self.zero_pose_btn = QtWidgets.QPushButton('MH Pose')
+        self.a_pose_btn = QtWidgets.QPushButton('A Pose')
+        self.t_pose_btn = QtWidgets.QPushButton('T Pose')
 
         # group
-        self.match_group = QtWidgets.QGroupBox(title='Match Joint')        
+        self.match_group = QtWidgets.QGroupBox(title='Match Joint / Pose')        
+
+        # horizontal layout
+        self.matchJoint_layout_h = QtWidgets.QHBoxLayout()
+        self.matchJoint_layout_h.addWidget(self.zero_pose_btn)
+        self.matchJoint_layout_h.addWidget(self.a_pose_btn)
+        self.matchJoint_layout_h.addWidget(self.t_pose_btn)
 
         # vertical layout
         self.matchJoint_layout = QtWidgets.QVBoxLayout()
         self.matchJoint_layout.addWidget(self.matchBodyJnt_btn)
-        self.matchJoint_layout.addWidget(self.matchFaceJnt_btn)
-        self.matchJoint_layout.addWidget(self.constFaceJnt_btn)
-        # self.matchJoint_layout.addWidget(self.drvJointZero_btn)
+        self.matchJoint_layout.addLayout(self.matchJoint_layout_h)
 
         # group set
         self.match_group.setLayout(self.matchJoint_layout)
@@ -113,7 +117,7 @@ class MyWindow(QtWidgets.QDialog):
     def create_skin_layout(self):
         # button
         self.skinTransfer_btn = QtWidgets.QPushButton('Skin Transfer A to B')
-        self.addHeadJoint_btn = QtWidgets.QPushButton('Add Select Head Missing Skin Joint')
+        # self.addHeadJoint_btn = QtWidgets.QPushButton('Add Select Head Missing Skin Joint')
 
         # group
         self.skin_group = QtWidgets.QGroupBox(title='Skin')
@@ -121,7 +125,7 @@ class MyWindow(QtWidgets.QDialog):
         # vertical layout
         self.skin_layout = QtWidgets.QVBoxLayout()
         self.skin_layout.addWidget(self.skinTransfer_btn)
-        self.skin_layout.addWidget(self.addHeadJoint_btn)
+        # self.skin_layout.addWidget(self.addHeadJoint_btn)
 
         # group set
         self.skin_group.setLayout(self.skin_layout)
@@ -135,23 +139,26 @@ class MyWindow(QtWidgets.QDialog):
         self.rbtn_face = QtWidgets.QRadioButton('Face', self)
         self.rbtn_face.setChecked(True)
 
-        self.rbtn_foot = QtWidgets.QRadioButton(self)
-        self.rbtn_foot.setText('Foot')
-
-        self.rbtn_hand = QtWidgets.QRadioButton(self)
-        self.rbtn_hand.setText('Hand')
+        self.rbtn_hair = QtWidgets.QRadioButton(self)
+        self.rbtn_hair.setText('Hair')
 
         self.rbtn_head = QtWidgets.QRadioButton(self)
         self.rbtn_head.setText('Head')
 
+        self.rbtn_onepiece = QtWidgets.QRadioButton(self)
+        self.rbtn_onepiece.setText('Onepiece')
+
+        self.rbtn_upper = QtWidgets.QRadioButton(self)
+        self.rbtn_upper.setText('Upper')        
+
         self.rbtn_lower = QtWidgets.QRadioButton(self)
         self.rbtn_lower.setText('Lower')
 
-        self.rbtn_upper = QtWidgets.QRadioButton(self)
-        self.rbtn_upper.setText('Upper')
+        self.rbtn_hand = QtWidgets.QRadioButton(self)
+        self.rbtn_hand.setText('Hand')
 
-        self.rbtn_onepiece = QtWidgets.QRadioButton(self)
-        self.rbtn_onepiece.setText('Onepiece')
+        self.rbtn_foot = QtWidgets.QRadioButton(self)
+        self.rbtn_foot.setText('Foot')
 
         # group
         self.set_group = QtWidgets.QGroupBox(title='Set')
@@ -159,12 +166,13 @@ class MyWindow(QtWidgets.QDialog):
         # horizontal layout
         self.set_layout_h = QtWidgets.QHBoxLayout()
         self.set_layout_h.addWidget(self.rbtn_face)
-        self.set_layout_h.addWidget(self.rbtn_foot)
-        self.set_layout_h.addWidget(self.rbtn_hand)
+        self.set_layout_h.addWidget(self.rbtn_hair)
         self.set_layout_h.addWidget(self.rbtn_head)
-        self.set_layout_h.addWidget(self.rbtn_lower)
-        self.set_layout_h.addWidget(self.rbtn_upper)
         self.set_layout_h.addWidget(self.rbtn_onepiece)
+        self.set_layout_h.addWidget(self.rbtn_upper)
+        self.set_layout_h.addWidget(self.rbtn_lower)
+        self.set_layout_h.addWidget(self.rbtn_hand)
+        self.set_layout_h.addWidget(self.rbtn_foot)
 
         # vertical layout
         self.set_layout = QtWidgets.QVBoxLayout()
@@ -200,13 +208,13 @@ class MyWindow(QtWidgets.QDialog):
 
         # match joint
         self.matchBodyJnt_btn.clicked.connect(self.on_button_pressed)
-        self.matchFaceJnt_btn.clicked.connect(self.on_button_pressed)
-        self.constFaceJnt_btn.clicked.connect(self.on_button_pressed)
-        # self.drvJointZero_btn.clicked.connect(self.on_button_pressed)
+        self.zero_pose_btn.clicked.connect(self.on_button_pressed)
+        self.a_pose_btn.clicked.connect(self.on_button_pressed)
+        self.t_pose_btn.clicked.connect(self.on_button_pressed)
 
         # skin
         self.skinTransfer_btn.clicked.connect(self.on_button_pressed)
-        self.addHeadJoint_btn.clicked.connect(self.on_button_pressed)
+        # self.addHeadJoint_btn.clicked.connect(self.on_button_pressed)
 
         # set
         self.skinSet_btn.clicked.connect(self.on_button_pressed)        
@@ -227,13 +235,7 @@ class MyWindow(QtWidgets.QDialog):
         sender = self.sender()
         print ('{0} : pressed'.format(sender.text()))
 
-        if sender.text() == 'MH_Body to Bip':
-            setup.matchJointBody2Bip()
-
-        elif sender.text() == 'MH_Face to MH_Body':
-            setup.matchJointFace2Body()
-
-        elif sender.text() == 'Import':
+        if sender.text() == 'Import':
             if self.bodyMale_btn.isChecked():
                 setup.importBody('male', 'import')
             elif self.bodyFemale_btn.isChecked():
@@ -249,11 +251,18 @@ class MyWindow(QtWidgets.QDialog):
             elif self.selectBody_btn.isChecked():
                 cmds.file(self.filepath_le.text(), r=True, namespace='body')
         
+        elif sender.text() == 'MH_Body to Bip':
+            setup.matchJointBody2Bip()
+
+        elif sender.text() == 'MH Pose':
+            setup.bodyPose("mh")
+        elif sender.text() == 'A Pose':
+            setup.bodyPose("a")
+        elif sender.text() == 'T Pose':
+            setup.bodyPose("t")
+
         elif sender.text() == 'Skin Transfer A to B':
             setup.skinTransfer()
-        
-        elif sender.text() == 'Constraints Face to Body':
-            setup.constDrv2FaceJnt()
 
         elif sender.text() == 'Drv Joint to Zero':
             setup.drvJointZero()
@@ -306,3 +315,6 @@ except:
     pass
 
 my_win = MyWindow()
+
+#clear history
+cmds.scriptEditorInfo (ch=True)
