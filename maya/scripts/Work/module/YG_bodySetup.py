@@ -2,7 +2,7 @@
 Work
 YG_bodySetup
 since 2023.08.16
-last updated 2024.01.12
+last updated 2024.01.12 
 by YeonGyun,Jeong
 lupinxyz@gmail.com
 """
@@ -110,7 +110,7 @@ def renameObj(*, myA='', myB='', myC='', myD='', mySide='', prefix='', subfix=''
     for i, obj in enumerate(selected_objects):
         # 2자리 패딩된 연속적인 숫자 생성
         padded_number = f"{i+1:02d}"
-
+        
         # 새로운 이름 생성
         new_name = ''
         if myA:
@@ -130,8 +130,8 @@ def renameObj(*, myA='', myB='', myC='', myD='', mySide='', prefix='', subfix=''
         if subfix:
             new_name = f"{obj}_{subfix}"
         if search:
-            new_name = obj.replace(search, replace)
-
+            new_name = obj.replace(search, replace)        
+        
         # 객체 이름 변경
         if new_name:
             cmds.rename(obj, new_name)
@@ -327,9 +327,9 @@ def drvJointZero():
               'pinky_metacarpal_r_drv', 'pinky_01_r_drv', 'pinky_02_r_drv', 'pinky_03_r_drv',
               'thigh_l_drv', 'calf_l_drv', 'foot_l_drv', 'ball_l_drv',
               'thigh_r_drv', 'calf_r_drv', 'foot_r_drv', 'ball_r_drv']
-
+    
     myParentDict = {}
-
+    
     # save parent dic
     # for i in myList:
     myDrvList = cmds.listRelatives('root_drv', c=True, ad=True, type='joint')
@@ -339,7 +339,7 @@ def drvJointZero():
         myParent = cmds.listRelatives(i, p=True)[0]
 
         myParentDict[i] = myParent
-
+    
     # print(myParentDict)
 
     # parent to world
@@ -352,11 +352,11 @@ def drvJointZero():
         print(i)
         cmds.select(i, r=True)
         cmds.makeIdentity (apply=True, r=True, pn=True)
-
+    
     # reparent
     for i in myDrvList:
         cmds.parent(i, myParentDict[i])
-
+    
     # cmds.delete(cmds.ls('transform*'))
 
 def exportAllJointSet(myExportName):
@@ -381,7 +381,7 @@ def skinJointSet():
         for i in temp:
             if 'skinCluster' in i:
                 mySkinJNT = cmds.skinCluster(i,query=True,inf=True)
-
+        
         # select skin joint
         cmds.select(mySkinJNT, r=True)
 
@@ -404,7 +404,7 @@ def exportJointSet(myExportName):
         for i in temp:
             if 'skinCluster' in i:
                 mySkinJNT = cmds.skinCluster(i,query=True,inf=True)
-
+        
         # select skin joint
         cmds.select(mySkinJNT, r=True)
         for j in mySkinJNT:
@@ -415,7 +415,7 @@ def exportJointSet(myExportName):
         for i in mySel:
             myList = cmds.listRelatives(ap=True, ad=True)
             cmds.select(myList, add=True)
-
+        
         mySel = cmds.ls(sl=True)
         for i in mySel:
             myExportSel.append(i)
@@ -511,7 +511,7 @@ def importBody(gender, state):
 def skinTransfer():
     # 스킨값 원본들
     mySource = cmds.ls(sl=True, l=True)[0:-1]
-
+    
     # 스킨값 복제 타겟
     myTarget = cmds.ls(sl=True, l=True)[-1]
 
@@ -527,9 +527,9 @@ def skinTransfer():
         for i in temp:
             if 'skinCluster' in i:
                 mySkinJoint = cmds.skinCluster(i,query=True,inf=True)
-
+                
                 for j in mySkinJoint:
-                    # 유니크 스킨 조인트 리스트 만들기
+                    # 유니크 스킨 조인트 리스트 만들기                    
                     if j not in mySkinJointList:
                         mySkinJointList.append(j)
 
@@ -553,7 +553,7 @@ def headAddJoint():
 
 def bodyPose(pose):
     print(pose)
-
+    
     loc = 'loc'
 
     for i in myDrvList:
@@ -576,14 +576,14 @@ def makePoseLoc(pose):
 
     if len(cmds.ls(myTopGrp)) == 0:
         myTopGrp = cmds.group(em=True, n=myTopGrp)
-
+    
     if pose == 'mh':
         myGrp = cmds.group(em=True, n='mh_loc')
     elif pose == 'a':
         myGrp = cmds.group(em=True, n='a_loc')
     elif pose == 't':
         myGrp = cmds.group(em=True, n='t_loc')
-
+    
     cmds.parent(myGrp, myTopGrp)
 
     for i in myDrvList:
@@ -644,7 +644,7 @@ def selectMetaHead():
               '.f[12326:12333]','.f[12346:12349]','.f[12382:12401]','.f[12418:12425]','.f[12662:12861]',
               '.f[12930:12937]','.f[12950:12953]','.f[12958:12969]','.f[12982:12989]','.f[13190:13253]',
               '.f[13318:13405]','.f[13414:13882]']
-
+    
     cmds.select(cl=True)
     for i in myList:
         cmds.select('*combined_lod0_mesh'+i, add=True)
@@ -654,7 +654,7 @@ def selectMetaFaceCon():
               'CTRL_R_eye_blink','CTRL_C_eye','CTRL_L_eye_blink','CTRL_C_jaw','CTRL_C_tongue_inOut',
               'CTRL_C_tongue_press','CTRL_C_tongue_bendTwist','CTRL_C_tongue_roll','CTRL_R_mouth_cornerPull','CTRL_L_mouth_cornerPull',
               'CTRL_L_brow_down', 'CTRL_R_brow_down']
-
+    
     cmds.select(myList, r=True)
 
 def get_midpoint():
@@ -664,12 +664,12 @@ def get_midpoint():
     # 두 점의 좌표 가져오기
     pos1 = cmds.xform(point1, query=True, translation=True, worldSpace=True)
     pos2 = cmds.xform(point2, query=True, translation=True, worldSpace=True)
-
+    
     # 중간점 계산
     mid_x = (pos1[0] + pos2[0]) / 2
     mid_y = (pos1[1] + pos2[1]) / 2
     mid_z = (pos1[2] + pos2[2]) / 2
-
+    
     myLoc = cmds.spaceLocator(name='midpoint_locator')[0]
     cmds.setAttr(myLoc+'.tx', mid_x)
     cmds.setAttr(myLoc+'.ty', mid_y)
@@ -704,22 +704,22 @@ def skirtToPT(myPose, mySide, myJointNum):
     if mySide == 'r':
         myOffsetSide = 'l'
 
-    for i in myList:
+    for i in myList:        
         myLoc = 'pt_skirt_' + i + '_' + myJointNum + '_' + mySide
         myJnt = 'skirt_' + i + '_' + myJointNum + '_' + mySide
-
+                
         cmds.delete( cmds.pointConstraint(myLoc, myJnt) )
 
     if myPose == 'fwd' or myPose == 'bck':
-        for i in myList:
+        for i in myList:        
             myLoc = 'pt_skirt_' + i + '_' + myJointNum + '_' + myOffsetSide
             myOffsetJnt = 'offset_skirt_' + i + '_' + myJointNum + '_' + myOffsetSide
-
+            
             cmds.delete( cmds.pointConstraint(myLoc, myOffsetJnt) )
 
 def makeGrp(myPC, myName):
     myRootGrp = cmds.group(em=True, n=myPC + '_' + myName + '_grp')
-
+    
     myFaceGrp = cmds.group(em=True, n=myPC + '_Face_' + myName + '_grp', p=myRootGrp)
     myFaceQuadGrp = cmds.group(em=True, n=myPC + '_Face_' + myName + '_quad_grp', p=myFaceGrp)
     myFaceQuadOriGrp = cmds.group(em=True, n=myPC + '_Face_' + myName + '_quad_ori_grp', p=myFaceQuadGrp)
@@ -730,7 +730,8 @@ def makeGrp(myPC, myName):
     myFaceTriOriGrp = cmds.group(em=True, n=myPC + '_Face_' + myName + '_tri_ori_grp', p=myFaceTriGrp)
     myFaceTriLod0Grp = cmds.group(em=True, n=myPC + '_Face_' + myName + '_tri_lod0_grp', p=myFaceTriGrp)
     myFaceTriLod1Grp = cmds.group(em=True, n=myPC + '_Face_' + myName + '_tri_lod1_grp', p=myFaceTriGrp)
-
+    
     myOutfitGrp = cmds.group(em=True, n=myPC + '_Outfit_' + myName + '_grp', p=myRootGrp)
     myOutfitQuadGrp = cmds.group(em=True, n=myPC + '_Outfit_' + myName + '_quad_grp', p=myOutfitGrp)
     myOutfitTriGrp = cmds.group(em=True, n=myPC + '_Outfit_' + myName + '_tri_grp', p=myOutfitGrp)
+
