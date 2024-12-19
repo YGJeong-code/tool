@@ -1,7 +1,7 @@
 /*
 YG_rigTool
 since 2023.10.24
-last updated 2024.04.19
+last updated 2024.12.12
 by YeonGyun,Jeong
 lupinxyz@gmail.com
 */
@@ -395,24 +395,27 @@ myVersion = "v1.1"
 	
 try( destroydialog YG_rigTool ) catch()
 
-rollout YG_rigTool ("YG_rigTool " + myVersion) width:160 height:408
+rollout YG_rigTool "YG_rigTool v1.1" width:160 height:496
 (
-	GroupBox 'grp1' "Bone" pos:[8,8] width:144 height:160 align:#left
+	GroupBox 'grp1' "Bone" pos:[8,8] width:144 height:240 align:#left
 	spinner 'spn_boneSize' "Bone Size" pos:[16,24] width:67 height:16 range:[1,20,5] type:#integer scale:1 align:#left
 	button 'btn_makeRootBone' "Make Root Bone" pos:[16,48] width:128 height:32 align:#left
 	button 'btn_boneMirror' "Bone Mirror" pos:[16,88] width:128 height:32 align:#left
-	button 'btn_openBoneTools' "Open Bone Tools" pos:[16,128] width:128 height:32 align:#left
-	
-	GroupBox 'grp2' "Rig" pos:[8,168] width:144 height:88 align:#left
-	edittext 'bip_name' "Biped : " pos:[16,184] width:128 height:24 align:#left
-	button 'btn_boneConnectToBonePT' "Bone Connect To Biped" pos:[16,216] width:128 height:32 align:#left
-	
-	GroupBox 'grp3' "Layer" pos:[8,256] width:144 height:88 align:#left
-	dropdownList 'layer_name' "" pos:[16,272] width:128 height:22 align:#left
-	button 'btn_layerArrange' "Layer Arrange" pos:[16,304] width:128 height:32 align:#left
+	button 'btn_makePointToSelObj' "Make Point To Sel Obj" pos:[16,128] width:128 height:32 align:#left
+	button 'btn_openBoneTools' "Open Bone Tools" pos:[16,208] width:128 height:32 align:#left
+	button 'btn_makeVolumeBone' "Make Volume Bone" pos:[16,168] width:128 height:32 align:#left
 
-	GroupBox 'grp6' "Tools" pos:[8,344] width:144 height:56 align:#left
-	button 'btn_namingTool' "Naming Tool" pos:[16,360] width:128 height:32 align:#left
+	GroupBox 'grp2' "Rig" pos:[8,256] width:144 height:88 align:#left
+	edittext 'bip_name' "Biped : " pos:[16,272] width:128 height:24 align:#left
+	button 'btn_boneConnectToBonePT' "Bone Connect To Biped" pos:[16,304] width:128 height:32 align:#left
+	
+	GroupBox 'grp3' "Layer" pos:[8,344] width:144 height:88 align:#left
+	dropdownList 'layer_name' "" pos:[16,360] width:128 height:22 align:#left
+	button 'btn_layerArrange' "Layer Arrange" pos:[16,392] width:128 height:32 align:#left
+
+	GroupBox 'grp4' "Tools" pos:[8,432] width:144 height:56 align:#left
+	button 'btn_namingTool' "Naming Tool" pos:[16,448] width:128 height:32 align:#left
+
 --------------------------------------------------------------------------------------------------------
 --function------------------------------------------------------------------------------------------------
 --------------------------------------------------------------------------------------------------------
@@ -1444,6 +1447,273 @@ rollout YG_rigTool ("YG_rigTool " + myVersion) width:160 height:408
 		$con_weapon_r.parent = myBipStruct.myBip
 	)
 
+	--make point to sel obj
+	fn makePointToSelObj=
+	(
+		for i in selection do
+		(
+			myPoint = point name: ("pt_"+i.name) size:spn_boneSize.value cross:off box:off axistripod:on
+			myPoint.transform = i.transform
+			myPoint.wirecolor = (color 14 255 2) --green
+			myPoint.parent = i
+		)
+	)
+
+	--make volume bone
+	fn makeVolumeBone=
+	(
+		fn makeShoulderL=
+		(
+			myPoint = point name:"pt_shoulder_l" size:10 cross:off box:off axistripod:on pos:[0,0,0]
+			
+			if myBipStruct.myUpperArmL == undefined then
+			(
+				myBipStruct.myUpperArmL = $Bip001_L_UpperArm
+			)
+			myPoint.transform = myBipStruct.myUpperArmL.transform
+			
+			myPoint.parent = myBipStruct.myUpperArmL
+
+			myPoint[3][2][2].value = -90
+			myPoint[3][2][3].value = 90
+
+			if myBipStruct.myClavicleL == undefined then
+			(
+				myBipStruct.myClavicleL = $Bip001_L_Clavicle
+			)
+			makeConst "ori" myPoint myBipStruct.myClavicleL
+
+			myDriver = $pt_tw_arm_1_l		
+			if myDriver == undefined then
+			(
+				myDriver = $Bip001_LUpArmTwist
+
+				if myDriver == undefined then
+				(
+					myDriver = myBipStruct.myUpperArmL
+				)
+			)
+			makeConst "ori2" myPoint myDriver
+			myPoint.rotation.controller.relative = on
+
+			makeBoneHalfSize myPoint "shoulder_l"
+			myBone = $shoulder_l
+
+			myParent = $upperarm_l
+			if myParent == undefined then
+			(
+				myParent = myBipStruct.myClavicleL
+			)
+			myBone.parent = myParent
+			makeConst "ori" myBone myPoint
+		)
+
+		fn makeShoulderR=
+		(
+			myPoint = point name:"pt_shoulder_r" size:10 cross:off box:off axistripod:on pos:[0,0,0]
+			
+			if myBipStruct.myUpperArmR == undefined then
+			(
+				myBipStruct.myUpperArmR = $Bip001_R_UpperArm
+			)
+			myPoint.transform = myBipStruct.myUpperArmR.transform		
+			myPoint.parent = myBipStruct.myUpperArmR
+
+			myPoint[3][2][2].value = 90
+			myPoint[3][2][3].value = 90
+
+			if myBipStruct.myClavicleR == undefined then
+			(
+				myBipStruct.myClavicleR = $Bip001_R_Clavicle
+			)
+			makeConst "ori" myPoint myBipStruct.myClavicleR
+
+			myDriver = $pt_tw_arm_1_r
+			if myDriver == undefined then
+			(
+				myDriver = $Bip001_RUpArmTwist
+
+				if myDriver == undefined then
+				(
+					myDriver = myBipStruct.myUpperArmR
+				)
+			)
+			makeConst "ori2" myPoint myDriver
+			myPoint.rotation.controller.relative = on
+
+			makeBoneHalfSize myPoint "shoulder_r"
+			myBone = $shoulder_r
+
+			myParent = $upperarm_r
+			if myParent == undefined then
+			(
+				myParent = myBipStruct.myClavicleR
+			)
+			myBone.parent = myParent
+			makeConst "ori" myBone myPoint
+		)
+
+		fn makeElbowL=
+		(
+			myPoint = point name:"pt_elbow_l" size:10 cross:off box:off axistripod:on pos:[0,0,0]
+
+			if myBipStruct.myForearmL == undefined then
+			(
+				myBipStruct.myForearmL = $Bip001_L_Forearm
+			)
+			myPoint.transform = myBipStruct.myForearmL.transform
+			myPoint.parent = myBipStruct.myForearmL
+
+			myPoint[3][2][3].value = 90
+			
+			myDriver = $pt_tw_arm_2_l
+			if myDriver == undefined then
+			(
+				myDriver = $Bip001_LUpArmTwist1
+			)
+			makeConst "ori" myPoint myDriver
+
+			myDriver = $pt_tw_arm_3_l
+			if myDriver == undefined then
+			(
+				myDriver = $Bip001_L_ForeTwist
+			)
+			makeConst "ori2" myPoint myDriver
+			myPoint.rotation.controller.relative = on
+
+			makeBoneHalfSize myPoint "elbow_l"
+			myBone = $elbow_l
+
+			myParent = $lowerarm_l
+			if myParent == undefined then
+			(
+				myParent = myBipStruct.myForearmL
+			)
+			myBone.parent = myParent
+			makeConst "ori" myBone myPoint
+		)
+
+		fn makeElbowR=
+		(
+			myPoint = point name:"pt_elbow_r" size:10 cross:off box:off axistripod:on pos:[0,0,0]
+
+			if myBipStruct.myForearmR == undefined then
+			(
+				myBipStruct.myForearmR = $Bip001_R_Forearm
+			)
+			myPoint.transform = myBipStruct.myForearmR.transform
+			myPoint.parent = myBipStruct.myForearmR
+
+			myPoint[3][2][3].value = 90
+			
+			myDriver = $pt_tw_arm_2_r
+			if myDriver == undefined then
+			(
+				myDriver = $Bip001_RUpArmTwist1
+			)
+			makeConst "ori" myPoint myDriver
+
+			myDriver = $pt_tw_arm_3_r
+			if myDriver == undefined then
+			(
+				myDriver = $Bip001_R_ForeTwist
+			)
+			makeConst "ori2" myPoint myDriver
+			myPoint.rotation.controller.relative = on
+
+			makeBoneHalfSize myPoint "elbow_r"
+			myBone = $elbow_r
+
+			myParent = $lowerarm_r
+			if myParent == undefined then
+			(
+				myParent = myBipStruct.myForearmR
+			)
+			myBone.parent = myParent
+			makeConst "ori" myBone myPoint
+		)
+
+		fn makeKneeL=
+		(
+			myPoint = point name:"pt_knee_l" size:10 cross:off box:off axistripod:on pos:[0,0,0]
+			
+			if myBipStruct.myCalfL == undefined then
+			(
+				myBipStruct.myCalfL = $Bip001_L_Calf
+			)
+			myPoint.transform = myBipStruct.myCalfL.transform
+
+			myParent = $pt_link_thigh_l
+			if myParent == undefined then
+			(
+				myParent = myBipStruct.myCalfL
+			)
+			myPoint.parent = myParent
+
+			myPoint[3][2][3].value = 90
+
+			if myBipStruct.myThighL == undefined then
+			(
+				myBipStruct.myThighL = $Bip001_L_Thigh
+			)
+			makeConst "ori" myPoint myBipStruct.myThighL
+			makeConst "ori2" myPoint myBipStruct.myCalfL
+			makeBoneHalfSize myPoint "knee_l"
+			myBone = $knee_l
+
+			myParent = $calf_l
+			if myParent == undefined then
+			(
+				myParent = myBipStruct.myCalfL
+			)
+			myBone.parent = myParent
+			makeConst "ori" myBone myPoint
+		)
+
+		fn makeKneeR=
+		(
+			myPoint = point name:"pt_knee_r" size:10 cross:off box:off axistripod:on pos:[0,0,0]
+			
+			if myBipStruct.myCalfR == undefined then
+			(
+				myBipStruct.myCalfr = $Bip001_R_Calf
+			)
+			myPoint.transform = myBipStruct.myCalfR.transform
+
+			myParent = $pt_link_thigh_r
+			if myParent == undefined then
+			(
+				myParent = myBipStruct.myCalfR
+			)
+			myPoint.parent = myParent
+
+			myPoint[3][2][3].value = 90
+
+			if myBipStruct.myThighR == undefined then
+			(
+				myBipStruct.myThighR = $Bip001_R_Thigh
+			)
+			makeConst "ori" myPoint myBipStruct.myThighR
+			makeConst "ori2" myPoint myBipStruct.myCalfR
+			makeBoneHalfSize myPoint "knee_r"
+			myBone = $knee_r
+
+			myParent = $calf_r
+			if myParent == undefined then
+			(
+				myParent = myBipStruct.myCalfR
+			)
+			myBone.parent = myParent
+			makeConst "ori" myBone myPoint
+		)
+
+		makeShoulderL()
+		makeShoulderR()
+		makeElbowL()
+		makeElbowR()
+		makeKneeL()
+		makeKneeR()
+	)
 --------------------------------------------------------------------------------------------------------
 --layer-------------------------------------------------------------------------------------------------
 --------------------------------------------------------------------------------------------------------
@@ -1710,6 +1980,30 @@ rollout YG_rigTool ("YG_rigTool " + myVersion) width:160 height:408
 			delete myPoint
 		)
 	)
+	on btn_boneMirror pressed do
+	(
+		for i=1 to selection.count do
+		(
+			myMirror = boneMirrorCopy selection[i]
+	
+			myMirrorBone = execute ("$"+ myMirror)
+	
+			myParent = selection[i].parent
+	
+			if i>1 do
+			(
+				myName = substituteString myParent.name "_l" "_r"
+	
+				myBone = execute ("$"+ myName)
+	
+				myMirrorBone.parent = myBone
+			)			
+		)
+	)
+	on btn_makePointToSelObj pressed do
+	(
+		makePointToSelObj()
+	)
 	on btn_openBoneTools pressed do
 	(
 		macros.run "Animation Tools" "BoneAdjustmentTools"
@@ -1724,35 +2018,16 @@ rollout YG_rigTool ("YG_rigTool " + myVersion) width:160 height:408
 	)
 	on btn_layerArrange pressed do
 	(
-		undo on
-		(
-			layerArrange()
-		)
+		undo on(layerArrange())
 	)
 	on btn_namingTool pressed do
 	(
 		scripts = "Z:\\VindictusGFX\\Content\\tool\\max\\scripts\\YG_namingTool.ms"
 		executeScriptFile scripts
 	)
-	on btn_boneMirror pressed do
+	on btn_makeVolumeBone pressed do
 	(
-		for i=1 to selection.count do
-		(
-			myMirror = boneMirrorCopy selection[i]
-
-			myMirrorBone = execute ("$"+ myMirror)
-
-			myParent = selection[i].parent
-
-			if i>1 do
-			(
-				myName = substituteString myParent.name "_l" "_r"
-
-				myBone = execute ("$"+ myName)
-
-				myMirrorBone.parent = myBone
-			)			
-		)
+		undo on(makeVolumeBone())
 	)
 )
 

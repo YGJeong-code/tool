@@ -338,7 +338,9 @@ rollout YG_fileTool "YG_fileTool v1.0" width:528 height:320
 		FBXExporterSetParam "ASCII" false
 		FBXExporterSetParam "FileVersion" "FBX201300"
 
-		exportFile (myFolder + "\\" + myFile) #noPrompt quiet:true selectedOnly:true
+		myFolderName = YG_fileTool.text_folderPath.text
+		myFileName = YG_fileTool.text_fileName.text
+		exportFile (myFolderName + "\\" + myFileName) #noPrompt quiet:true selectedOnly:true
 	)
 )
 
