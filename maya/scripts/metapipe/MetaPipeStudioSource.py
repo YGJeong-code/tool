@@ -1,0 +1,5 @@
+ROOT_DIR = "c:/dna_calibration"
+MAIN_PATH = "c:/Arts and Spells/Scripts"
+MAYA_VERSION = "2023"
+dnaPath= "C:/Users/ygjeong/Documents/maya/scripts/DNA/data/dna_files/Fiona4_calib.dna"
+body_type = "f_tal_nrw"

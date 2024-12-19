@@ -1,0 +1,5 @@
+ROOT_DIR = "Z:/VindictusGFX/Content/tool/maya/scripts/DNA"
+MAIN_PATH = "Z:/VindictusGFX/Content/tool/maya/scripts/metapipe"
+MAYA_VERSION = "2023"
+dnaPath = "Z:/VindictusGFX/Content/tool/maya/scripts/DNA/data/dna_files/Ada.dna"
+body_type = "f_tal_nrw"
